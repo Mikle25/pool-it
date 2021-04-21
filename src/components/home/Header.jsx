@@ -39,7 +39,7 @@ const Header = () => {
         </Title>
       </TitleWrap>
 
-      <BtnMoreInfo bgColor={theme.blue} color={theme.white} fs={theme.fs32}>
+      <BtnMoreInfo bg={theme.blue} color={theme.white} fs={theme.fs32}>
         Find out more
       </BtnMoreInfo>
     </Container>

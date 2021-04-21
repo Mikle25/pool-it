@@ -44,7 +44,7 @@ const Header = () => {
 
         <CardUser
           text="Public and Private Liquidity Pools"
-          bgColor={theme.blue}
+          bg={theme.blue}
           color={theme.white}
         />
 

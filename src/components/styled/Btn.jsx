@@ -6,7 +6,7 @@ const Btn = styled(Button)`
   min-width: 200px;
   padding: 10px calc(${({ theme }) => theme.radiusButton} / 2);
   border-radius: ${({ theme }) => theme.radiusButton};
-  background-color: ${({ theme, bgColor }) => bgColor || theme.white};
+  background-color: ${({ theme, bg }) => bg || theme.white};
   color: ${({ theme, color }) => color || theme.blue};
   font-size: ${({ theme, fs }) => fs || theme.fs18};
   border: 0;

@@ -62,6 +62,10 @@ const FooterUl = styled.ul`
   display: flex;
   flex-direction: column;
   row-gap: 2vw;
+
+  @media (${({ theme }) => theme.xlDown}) {
+    row-gap: 3vh;
+  }
 `;
 
 const AppFooter = () => {

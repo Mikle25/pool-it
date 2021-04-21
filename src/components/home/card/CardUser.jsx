@@ -16,11 +16,11 @@ const Container = styled(Card)`
   padding: 0 20px;
 `;
 
-const CardUser = ({ text, color, bgColor }) => {
+const CardUser = ({ text, color, bg }) => {
   const theme = useThemeContext();
 
   return (
-    <Container w="220px" h="175px" bgColor={bgColor || theme.white}>
+    <Container w="220px" h="175px" bg={bg || theme.white}>
       <IconColor
         icon="user-friends"
         size="3x"
@@ -35,13 +35,13 @@ const CardUser = ({ text, color, bgColor }) => {
 CardUser.propTypes = {
   text: PropTypes.string,
   color: PropTypes.string,
-  bgColor: PropTypes.string,
+  bg: PropTypes.string,
 };
 
 CardUser.defaultProps = {
   text: '',
   color: '',
-  bgColor: '',
+  bg: '',
 };
 
 export default CardUser;

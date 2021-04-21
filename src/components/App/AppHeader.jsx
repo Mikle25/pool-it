@@ -22,7 +22,7 @@ const AppHeader = () => {
   return (
     <Header>
       <NavLink to="/">
-        <img src={logo} alt="Pool It" width={150} />
+        <img src={logo} alt="Pool It" />
       </NavLink>
 
       <FlexContainer>
