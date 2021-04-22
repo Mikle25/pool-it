@@ -1,15 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Title } from '../../styled/Text';
-import useThemeContext from '../../../hooks/useThemeContext';
+import { SubTitle } from '../../styled/Text';
 import CardRates from '../card/CardRates';
+import { BtnBig, BtnBigSkyBlue } from '../../styled/Btn';
+import useThemeContext from '../../../hooks/useThemeContext';
+import BtnWrapper from '../../styled/Wrappers';
 
 const InfoBlockWrapper = styled.section`
-  padding: 86px 217px;
+  display: flex;
+  flex-direction: column;
+  padding: 86px 14vw;
   width: 100%;
+  row-gap: 5vw;
 
   @media (${({ theme }) => theme.xlDown}) {
-    padding: 50px 25px 15px;
+    padding: 5vw;
   }
 `;
 
@@ -18,7 +23,7 @@ const Wrapper = styled.div`
   justify-content: center;
   width: 100%;
   height: 500px;
-  grid-gap: 5vw;
+  gap: 5vw;
 
   @media (${({ theme }) => theme.xlDown}) {
     height: 100%;
@@ -26,18 +31,12 @@ const Wrapper = styled.div`
   }
 `;
 
-const Footer = () => {
+const ContentFooter = () => {
   const theme = useThemeContext();
 
   return (
     <InfoBlockWrapper>
-      <Title
-        fs={theme.fs36}
-        color={theme.darkBlue}
-        style={{ marginBottom: '76px' }}
-      >
-        How Does It Do??
-      </Title>
+      <SubTitle>How Does It Do??</SubTitle>
 
       <Wrapper>
         <CardRates
@@ -60,8 +59,13 @@ const Footer = () => {
             environment."
         />
       </Wrapper>
+
+      <BtnWrapper>
+        <BtnBig fs={theme.fs36}>Start private pool</BtnBig>
+        <BtnBigSkyBlue fs={theme.fs36}>Join public pool </BtnBigSkyBlue>
+      </BtnWrapper>
     </InfoBlockWrapper>
   );
 };
 
-export default Footer;
+export default ContentFooter;

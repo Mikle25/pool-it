@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import Header from './content/Header';
+import ContentHeader from './content/ContentHeader';
 import Middle from './content/Middle';
-import Footer from './content/Footer';
+import ContentFooter from './content/ContentFooter';
 
 const BodyWrapper = styled.section`
   display: flex;
@@ -14,9 +14,9 @@ const BodyWrapper = styled.section`
 const Body = () => {
   return (
     <BodyWrapper>
-      <Header />
+      <ContentHeader />
       <Middle />
-      <Footer />
+      <ContentFooter />
     </BodyWrapper>
   );
 };

@@ -14,13 +14,13 @@ const Container = styled.section`
 `;
 
 const CardWrapper = styled(Container)`
-  grid-gap: 7vh;
+  gap: 7vh;
   background-size: cover;
 `;
 
 const CardUserWrapper = styled.div`
   display: flex;
-  grid-gap: 10vw;
+  gap: 10vw;
 
   @media (${({ theme }) => theme.xlDown}) {
     flex-direction: column;
@@ -28,7 +28,7 @@ const CardUserWrapper = styled.div`
   }
 `;
 
-const Header = () => {
+const ContentHeader = () => {
   const theme = useThemeContext();
 
   return (
@@ -54,4 +54,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default ContentHeader;

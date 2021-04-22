@@ -2,50 +2,61 @@ import styled from 'styled-components';
 import { Button } from 'react-bootstrap';
 
 const Btn = styled(Button)`
-  width: fit-content;
-  min-width: 200px;
-  padding: 10px calc(${({ theme }) => theme.radiusButton} / 2);
-  border-radius: ${({ theme }) => theme.radiusButton};
-  background-color: ${({ theme, bg }) => bg || theme.white};
-  color: ${({ theme, color }) => color || theme.blue};
-  font-size: ${({ theme, fs }) => fs || theme.fs18};
-  border: 0;
+   {
+    padding: 10px calc(${({ theme }) => theme.radiusButton} / 2);
+    border-radius: ${({ theme }) => theme.radiusButton};
+    background-color: ${({ theme, bg }) => bg || theme.blue};
+    color: ${({ theme, color }) => color || theme.white};
+    font-size: ${({ theme, fs }) => fs || theme.fs18};
+    border: ${({ theme }) => theme.borderButton};
 
-  &:hover {
-    background-color: ${({ theme }) => theme.skyBlue};
-    color: ${({ theme }) => theme.blue};
-  }
+    @media (${({ theme }) => theme.xlDown}) {
+      font-size: ${({ theme }) => theme.fs18};
+    }
 
-  &:focus {
-    background-color: ${({ theme }) => theme.skyBlue};
-    color: ${({ theme }) => theme.blue};
-  }
+    &:hover {
+      background-color: ${({ theme }) => theme.skyBlue};
+      color: ${({ theme }) => theme.blue};
+    }
 
-  &:not(:disabled):not(.disabled):active {
-    background-color: ${({ theme }) => theme.skyBlue};
-    color: ${({ theme }) => theme.blue};
-  }
-`;
+    &:focus {
+      background-color: ${({ theme }) => theme.skyBlue};
+      color: ${({ theme }) => theme.blue};
+    }
 
-const BtnMoreInfo = styled(Btn)`
-  @media (${({ theme }) => theme.xlDown}) {
-    font-size: ${({ theme }) => theme.fs24};
-  }
-
-  &:hover {
-    background-color: ${({ theme }) => theme.white};
-    color: ${({ theme }) => theme.blue};
-  }
-
-  &:focus {
-    background-color: ${({ theme }) => theme.white};
-    color: ${({ theme }) => theme.blue};
-  }
-
-  &:not(:disabled):not(.disabled):active {
-    background-color: ${({ theme }) => theme.white};
-    color: ${({ theme }) => theme.blue};
+    &:not(:disabled):not(.disabled):active {
+      background-color: ${({ theme }) => theme.skyBlue};
+      color: ${({ theme }) => theme.blue};
+    }
   }
 `;
 
-export { Btn, BtnMoreInfo };
+const BtnSkyBlue = styled(Btn)`
+  background-color: ${({ theme }) => theme.skyBlue};
+  color: ${({ theme }) => theme.blue};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.blue};
+    color: ${({ theme }) => theme.white};
+  }
+
+  &:focus {
+    background-color: ${({ theme }) => theme.blue};
+    color: ${({ theme }) => theme.white};
+  }
+
+  &:not(:disabled):not(.disabled):active {
+    background-color: ${({ theme }) => theme.blue};
+    color: ${({ theme }) => theme.white};
+  }
+`;
+
+const BtnBig = styled(Btn)`
+  width: 100%;
+`;
+
+const BtnBigSkyBlue = styled(BtnSkyBlue)`
+  width: 100%;
+`;
+
+export { Btn, BtnSkyBlue, BtnBig, BtnBigSkyBlue };

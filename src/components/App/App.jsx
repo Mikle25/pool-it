@@ -8,6 +8,8 @@ import '../../assets/scss/index.scss';
 import Routes from '../../router/Routes';
 import AppWrapper from './AppWrapper';
 import '../../plugins/faLibrary';
+import AppHeader from './AppHeader';
+import AppFooter from './AppFooter';
 
 function App() {
   return (
@@ -16,7 +18,9 @@ function App() {
         <Normalize />
         <GlobalStyles />
         <AppWrapper>
+          <AppHeader />
           <Routes />
+          <AppFooter />
         </AppWrapper>
       </ThemeProvider>
     </Router>

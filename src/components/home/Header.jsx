@@ -1,48 +1,54 @@
 import React from 'react';
 import styled from 'styled-components';
-import AppHeader from '../App/AppHeader';
 import bgMain from '../../assets/img/bg-main-page.png';
 import { Title } from '../styled/Text';
-import { BtnMoreInfo } from '../styled/Btn';
+import { BtnBig, BtnBigSkyBlue } from '../styled/Btn';
 import useThemeContext from '../../hooks/useThemeContext';
+import BtnWrapper from '../styled/Wrappers';
 
-const Container = styled.section`
+const ContainerHeader = styled.section`
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  align-items: flex-end;
   min-height: 650px;
   background: url(${bgMain}) 100% no-repeat;
   background-size: cover;
-  padding: 50px 210px;
+  padding: 0 14vw 3vw;
+  row-gap: 5vw;
 
   @media (${({ theme }) => theme.xlDown}) {
-    padding: 50px 25px;
+    padding: 0 5vw 5vh;
+    row-gap: 15vh;
   }
 `;
 
-const TitleWrap = styled.div`
-  max-width: 670px;
+const Container = styled.div`
+  max-width: 725px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  row-gap: 60px;
+
+  @media (${({ theme }) => theme.mdDown}) {
+    width: auto;
+  }
 `;
 
 const Header = () => {
   const theme = useThemeContext();
 
   return (
-    <Container>
-      <div className="fixed-top">
-        <AppHeader />
-      </div>
-
-      <TitleWrap>
+    <ContainerHeader>
+      <Container>
         <Title>
           Platform for the pooling and distribution of digital assets
         </Title>
-      </TitleWrap>
 
-      <BtnMoreInfo bg={theme.blue} color={theme.white} fs={theme.fs32}>
-        Find out more
-      </BtnMoreInfo>
-    </Container>
+        <BtnWrapper>
+          <BtnBig fs={theme.fs32}>Start pool</BtnBig>
+          <BtnBigSkyBlue fs={theme.fs32}>Find out more</BtnBigSkyBlue>
+        </BtnWrapper>
+      </Container>
+    </ContainerHeader>
   );
 };
 
