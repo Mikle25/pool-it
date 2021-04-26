@@ -14,6 +14,9 @@ export default createGlobalStyle`
   
   a {
     color: ${({ theme }) => theme.white};
+    &:hover {
+      text-decoration: none;
+    }
   }
 
   button {

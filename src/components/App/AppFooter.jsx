@@ -2,10 +2,14 @@ import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import logo from '../../assets/img/logo.svg';
-import { Btn } from '../styled/Btn';
+import { BtnWhite } from '../styled/Btn';
 import { IconMedia } from '../styled/Icon';
 import { Text } from '../styled/Text';
 import useThemeContext from '../../hooks/useThemeContext';
+import {
+  useUserDispatchContext,
+  useUserStateContext,
+} from '../../store/userContext';
 
 const ContainerFooter = styled.footer`
   display: flex;
@@ -132,6 +136,8 @@ const supportLinks = [
 const AppFooter = () => {
   const theme = useThemeContext();
   const currentYear = useMemo(() => new Date().getFullYear(), []);
+  const { isLoggedIn } = useUserStateContext();
+  const { connect } = useUserDispatchContext();
 
   return (
     <ContainerFooter>
@@ -173,7 +179,11 @@ const AppFooter = () => {
         </ContainerLinks>
 
         <div>
-          <Btn variant="primary">Connect wallet</Btn>
+          {isLoggedIn ? (
+            <BtnWhite>Create new pools</BtnWhite>
+          ) : (
+            <BtnWhite onClick={connect}>Connect wallet</BtnWhite>
+          )}
         </div>
       </Container>
 

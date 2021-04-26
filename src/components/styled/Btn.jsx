@@ -31,6 +31,11 @@ const Btn = styled(Button)`
   }
 `;
 
+const BtnWhite = styled(Btn)`
+  background-color: ${({ theme, bg }) => bg || theme.white};
+  color: ${({ theme }) => theme.blue};
+`;
+
 const BtnSkyBlue = styled(Btn)`
   background-color: ${({ theme }) => theme.skyBlue};
   color: ${({ theme }) => theme.blue};
@@ -59,4 +64,4 @@ const BtnBigSkyBlue = styled(BtnSkyBlue)`
   width: 100%;
 `;
 
-export { Btn, BtnSkyBlue, BtnBig, BtnBigSkyBlue };
+export { BtnSkyBlue, BtnBig, BtnBigSkyBlue, BtnWhite };
