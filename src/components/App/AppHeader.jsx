@@ -2,8 +2,13 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from '../../assets/img/logo.svg';
-import { Btn } from '../styled/Btn';
+import { BtnWhite } from '../styled/Btn';
 import { FlexJustifyBetween } from '../styled/Flex';
+import {
+  useUserDispatchContext,
+  useUserStateContext,
+} from '../../store/userContext';
+import UserAccount from './UserAccount';
 
 const Header = styled.header`
   position: absolute;
@@ -20,11 +25,15 @@ const Header = styled.header`
 `;
 
 const FlexContainer = styled(FlexJustifyBetween)`
+  align-items: center;
   width: 500px;
   max-width: 500px;
 `;
 
 const AppHeader = () => {
+  const { connectAcc } = useUserDispatchContext();
+  const { isLoggedIn, address } = useUserStateContext();
+
   return (
     <Header>
       <NavLink to="/">
@@ -32,8 +41,12 @@ const AppHeader = () => {
       </NavLink>
 
       <FlexContainer>
-        <Btn>Pools</Btn>
-        <Btn variant="primary">Connect wallet</Btn>
+        <NavLink to="/">Pools</NavLink>
+        {isLoggedIn ? (
+          <UserAccount address={address} />
+        ) : (
+          <BtnWhite onClick={connectAcc}>Connect wallet</BtnWhite>
+        )}
       </FlexContainer>
     </Header>
   );

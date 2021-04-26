@@ -33,4 +33,8 @@ const Text = styled.p`
   }
 `;
 
-export { Title, SubTitle, Text };
+const WhiteText = styled.span`
+  color: ${({ theme }) => theme.white};
+`;
+
+export { Title, SubTitle, Text, WhiteText };

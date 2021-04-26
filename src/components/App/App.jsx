@@ -10,6 +10,7 @@ import AppWrapper from './AppWrapper';
 import '../../plugins/faLibrary';
 import AppHeader from './AppHeader';
 import AppFooter from './AppFooter';
+import { UserProvider } from '../../store/userContext';
 
 function App() {
   return (
@@ -17,11 +18,14 @@ function App() {
       <ThemeProvider theme={theme}>
         <Normalize />
         <GlobalStyles />
-        <AppWrapper>
-          <AppHeader />
-          <Routes />
-          <AppFooter />
-        </AppWrapper>
+
+        <UserProvider>
+          <AppWrapper>
+            <AppHeader />
+            <Routes />
+            <AppFooter />
+          </AppWrapper>
+        </UserProvider>
       </ThemeProvider>
     </Router>
   );
