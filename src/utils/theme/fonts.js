@@ -1,4 +1,6 @@
 export default {
+  fs12: '12px',
+  fs14: '14px',
   fs18: '18px',
   fs24: '24px',
   fs28: '28px',

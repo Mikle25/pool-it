@@ -2,8 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import ellipsis from '../../utils/helpers';
-import { WhiteText } from '../styled/Text';
+import { ellipsis } from '../../utils/helpers';
+import { White } from '../styled/Text';
+import useThemeContext from '../../hooks/useThemeContext';
+import { IconWrapper } from '../styled/Icon';
 
 const AccountWrapper = styled.div`
   display: flex;
@@ -12,11 +14,19 @@ const AccountWrapper = styled.div`
 `;
 
 const UserAccount = ({ address }) => {
+  const theme = useThemeContext();
+
   return (
     <AccountWrapper>
-      <FontAwesomeIcon icon={['far', 'user']} size="2x" color="#fff" />
-      <WhiteText>{ellipsis(address)}</WhiteText>
-      <FontAwesomeIcon icon={['far', 'bell']} size="2x" color="#fff" />
+      <IconWrapper>
+        <FontAwesomeIcon
+          icon={['far', 'user']}
+          size="1x"
+          color={theme.darkBlue}
+        />
+      </IconWrapper>
+      <White>{ellipsis(address)}</White>
+      <FontAwesomeIcon icon={['far', 'bell']} size="1x" color={theme.white} />
     </AccountWrapper>
   );
 };

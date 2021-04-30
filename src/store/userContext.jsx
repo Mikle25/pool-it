@@ -91,7 +91,7 @@ const UserProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (isMetaMaskInstall && address) {
+    if (isMetaMaskInstall) {
       const { ethereum } = window;
       updateAcc();
       ethereum.on('accountsChanged', updateAcc);
