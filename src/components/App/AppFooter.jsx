@@ -26,7 +26,7 @@ const Container = styled.div`
   justify-content: space-between;
   column-gap: 5vw;
 
-  @media (${({ theme }) => theme.xlDown}) {
+  @media (${({ theme }) => theme.lgDown}) {
     height: auto;
     flex-direction: column;
     row-gap: 2rem;
@@ -48,7 +48,7 @@ const MediaWrapper = styled.div`
   column-gap: 2vw;
   margin-bottom: 20px;
 
-  @media (${({ theme }) => theme.xlDown}) {
+  @media (${({ theme }) => theme.lgDown}) {
     column-gap: 10vw;
     margin: 0;
   }
@@ -58,7 +58,7 @@ const ContainerLinks = styled.div`
   display: flex;
   gap: 3vw 5vw;
 
-  @media (${({ theme }) => theme.xlDown}) {
+  @media (${({ theme }) => theme.lgDown}) {
     flex-wrap: wrap;
     column-gap: 7vw;
     width: auto;

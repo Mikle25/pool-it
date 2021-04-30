@@ -184,7 +184,7 @@ const OtherInfo = () => {
                       />
                     </IconWrapper>
                     <span>{coin.name}</span>
-                    <span>{coin.percent}</span>
+                    <span>{coin.percent}%</span>
                   </ItemCoin>
                 ))}
               </CoinsWrap>

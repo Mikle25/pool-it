@@ -8,7 +8,7 @@ import MyPools from '../components/pools/my-pools/MyPools';
 import PublicPools from '../components/pools/public-pools/PublicPools';
 
 const Container = styled.section`
-  background: url(${bgPools}) top right no-repeat;
+  background: url(${bgPools}) top no-repeat;
   background-size: cover;
 `;
 const ContentWrap = styled.div`
