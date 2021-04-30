@@ -13,7 +13,7 @@ const ContainerFooter = styled.footer`
   display: flex;
   flex-direction: column;
   background: rgba(11, 147, 180, 0.86);
-  padding: 45px 14vw;
+  padding: 2rem 14vw;
 
   @media (${({ theme }) => theme.xlDown}) {
     padding: 5vw;
@@ -55,10 +55,13 @@ const MediaWrapper = styled.div`
 `;
 
 const ContainerLinks = styled.div`
+  position: relative;
+  top: 2rem;
   display: flex;
   gap: 3vw 5vw;
 
   @media (${({ theme }) => theme.lgDown}) {
+    position: static;
     flex-wrap: wrap;
     column-gap: 7vw;
     width: auto;

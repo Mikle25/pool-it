@@ -22,7 +22,7 @@ const CardUserWrapper = styled.div`
   display: flex;
   gap: 10vw;
 
-  @media (${({ theme }) => theme.xlDown}) {
+  @media (${({ theme }) => theme.lgDown}) {
     flex-direction: column;
     align-items: center;
   }

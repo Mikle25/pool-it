@@ -15,7 +15,7 @@ const Info = styled.section`
   min-height: 680px;
   column-gap: 5vw;
 
-  @media (${({ theme }) => theme.xlDown}) {
+  @media (${({ theme }) => theme.lgDown}) {
     flex-wrap: wrap;
     padding: 5vw;
   }
