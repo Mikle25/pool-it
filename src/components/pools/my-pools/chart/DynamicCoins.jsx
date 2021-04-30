@@ -11,7 +11,7 @@ const ContainerChart = styled.div`
   flex-direction: column;
   padding: 30px 40px 20px;
   gap: 2rem;
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.7);
   border-radius: ${({ theme }) => theme.radiusCard};
   width: 500px;
 
@@ -31,23 +31,23 @@ const mockDataCoins = [
     eth: 10,
   },
   {
-    btc: 25,
-    eth: 20,
+    btc: 8,
+    eth: 25,
   },
   {
-    btc: 30,
-    eth: 40,
+    btc: 15,
+    eth: 30,
   },
   {
     btc: 45,
-    eth: 50,
+    eth: 25,
   },
   {
-    btc: 40,
-    eth: 35,
+    btc: 28,
+    eth: 48,
   },
   {
-    btc: 25,
+    btc: 12,
     eth: 20,
   },
   {

@@ -27,7 +27,8 @@ Tbl.Td = styled.td`
 `;
 
 const WrapIcon = styled(FlexCenter)`
-  padding: 0.3rem 0;
+  width: 25px;
+  height: 25px;
   background-color: ${({ theme }) => theme.lightBlue};
   border-radius: 50%;
 `;

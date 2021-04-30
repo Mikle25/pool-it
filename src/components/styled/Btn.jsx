@@ -12,7 +12,7 @@ const Btn = styled(Button)`
     border: ${({ theme }) => theme.borderButton};
     box-shadow: ${({ theme }) => theme.buttonShadow};
 
-    @media (${({ theme }) => theme.xlDown}) {
+    @media (${({ theme }) => theme.lgDown}) {
       font-size: ${({ theme }) => theme.fs14};
     }
 

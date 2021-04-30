@@ -78,7 +78,7 @@ const MyPools = () => {
     <ContainerPools>
       <TableCards
         rows={mockData}
-        maxHeight="600px"
+        maxHeight="750px"
         rowKey="id"
         content={(row) => <CardMyPool row={row} />}
       />

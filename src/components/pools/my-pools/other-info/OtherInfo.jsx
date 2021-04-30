@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { LightBlue, SubTitle } from '../../../styled/Text';
+import { Blue, LightBlue, SubTitle } from '../../../styled/Text';
 import cupIcon from '../../../../assets/img/other-info-cup-icon.svg';
 import { BtnWhite } from '../../../styled/Btn';
 import DynamicCoins from '../chart/DynamicCoins';
@@ -160,7 +160,7 @@ const OtherInfo = () => {
         <OtherInfoWrap.Items>
           <Transactions>
             <Transactions.Header>
-              <LightBlue fw={500}>Transactions</LightBlue>
+              <LightBlue style={{ fontWeight: 500 }}>Transactions</LightBlue>
               <span>See All</span>
             </Transactions.Header>
 
@@ -171,7 +171,7 @@ const OtherInfo = () => {
 
           <PopularCoinsWrap>
             <PopularCoins>
-              <LightBlue fw={500}>Popular coins</LightBlue>
+              <LightBlue style={{ fontWeight: 500 }}>Popular coins</LightBlue>
 
               <CoinsWrap>
                 {mockPopularCoins.map((coin) => (
@@ -192,6 +192,10 @@ const OtherInfo = () => {
           </PopularCoinsWrap>
         </OtherInfoWrap.Items>
       </OtherInfoWrap>
+
+      <Blue style={{ fontWeight: 900, textAlign: 'center' }}>
+        The more you pool, the more you save, the more you win.
+      </Blue>
     </ContainerOtherInfo>
   );
 };
