@@ -4,19 +4,18 @@ import bgMain from '../../assets/img/bg-main-page.png';
 import { Title } from '../styled/Text';
 import { BtnBig, BtnBigSkyBlue } from '../styled/Btn';
 import useThemeContext from '../../hooks/useThemeContext';
-import BtnWrapper from '../styled/Wrappers';
+import { BtnWrapper } from '../styled/Wrappers';
 
 const ContainerHeader = styled.section`
   display: flex;
   align-items: flex-end;
-  min-height: 650px;
-  background: url(${bgMain}) 100% no-repeat;
+  background: url(${bgMain}) right no-repeat;
   background-size: cover;
-  padding: 0 14vw 3vw;
+  padding: 170px 14vw 3vw;
   row-gap: 5vw;
 
   @media (${({ theme }) => theme.xlDown}) {
-    padding: 0 5vw 5vh;
+    padding: 170px 5vw 5vh;
     row-gap: 15vh;
   }
 `;
@@ -25,7 +24,6 @@ const Container = styled.div`
   max-width: 725px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
   row-gap: 60px;
 
   @media (${({ theme }) => theme.mdDown}) {

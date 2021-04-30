@@ -13,4 +13,10 @@ const IconMedia = styled(FontAwesomeIcon)`
   }
 `;
 
-export { IconColor, IconMedia };
+const IconWrapper = styled.div`
+  padding: 0.375rem 0.75rem;
+  border-radius: 50%;
+  background-color: ${({ theme, bgColor }) => bgColor || theme.white};
+`;
+
+export { IconColor, IconMedia, IconWrapper };

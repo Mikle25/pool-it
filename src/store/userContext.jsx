@@ -75,7 +75,7 @@ const UserProvider = ({ children }) => {
       setAddress(acc[0]);
       setBalance(bal);
     } catch (e) {
-      console.error(e);
+      // console.error(e);
     }
   };
 
@@ -86,12 +86,12 @@ const UserProvider = ({ children }) => {
       setAddress(acc[0]);
       setBalance(bal);
     } catch (e) {
-      console.error(e);
+      // console.error(e);
     }
   };
 
   useEffect(() => {
-    if (isMetaMaskInstall && address) {
+    if (isMetaMaskInstall) {
       const { ethereum } = window;
       updateAcc();
       ethereum.on('accountsChanged', updateAcc);

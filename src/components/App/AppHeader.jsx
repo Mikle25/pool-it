@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from '../../assets/img/logo.svg';
-import { BtnWhite } from '../styled/Btn';
 import { FlexJustifyBetween } from '../styled/Flex';
-import {
-  useUserDispatchContext,
-  useUserStateContext,
-} from '../../store/userContext';
+import { useUserStateContext } from '../../store/userContext';
 import UserAccount from './UserAccount';
+import BtnConnect from '../BtnConnect';
+import Burger from '../burger-menu/Burger';
+import Menu from '../burger-menu/Menu';
+import LinkRout from '../styled/Links';
 
 const Header = styled.header`
   position: absolute;
@@ -26,13 +26,23 @@ const Header = styled.header`
 
 const FlexContainer = styled(FlexJustifyBetween)`
   align-items: center;
-  width: 500px;
-  max-width: 500px;
+  gap: 5vw;
+
+  @media (${({ theme }) => theme.mdDown}) {
+    display: none;
+  }
+`;
+
+const BurgerMenu = styled.div`
+  display: none;
+  @media (${({ theme }) => theme.mdDown}) {
+    display: block;
+  }
 `;
 
 const AppHeader = () => {
-  const { connectAcc } = useUserDispatchContext();
   const { isLoggedIn, address } = useUserStateContext();
+  const [open, setOpen] = useState(false);
 
   return (
     <Header>
@@ -41,13 +51,23 @@ const AppHeader = () => {
       </NavLink>
 
       <FlexContainer>
-        <NavLink to="/">Pools</NavLink>
+        <LinkRout to="/pools">Pools</LinkRout>
+
         {isLoggedIn ? (
-          <UserAccount address={address} />
+          <>
+            <LinkRout to="/enter">Enter lottery</LinkRout>
+            <UserAccount address={address} />
+          </>
         ) : (
-          <BtnWhite onClick={connectAcc}>Connect wallet</BtnWhite>
+          <BtnConnect />
         )}
       </FlexContainer>
+
+      <BurgerMenu>
+        <Burger open={open} setOpen={setOpen} />
+      </BurgerMenu>
+
+      <Menu open={open} setOpen={setOpen} />
     </Header>
   );
 };

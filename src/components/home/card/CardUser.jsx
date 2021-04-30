@@ -12,7 +12,7 @@ const Container = styled(Card)`
   align-items: center;
   justify-content: center;
   text-align: center;
-  border: ${({ theme }) => theme.borderBlue};
+  border: ${({ theme, borderColor }) => theme.borderBlue(borderColor)};
   padding: 0 20px;
 `;
 
@@ -20,14 +20,19 @@ const CardUser = ({ text, color, bg }) => {
   const theme = useThemeContext();
 
   return (
-    <Container w="220px" h="175px" bg={bg || theme.white}>
+    <Container
+      w="220px"
+      h="175px"
+      bg={bg || theme.white}
+      borderColor={bg || theme.lightBlue}
+    >
       <IconColor
         icon="user-friends"
         size="3x"
         color={color}
         style={{ marginBottom: '20px' }}
       />
-      <Text color={color}>{text}</Text>
+      <Text color={color || theme.blue}>{text}</Text>
     </Container>
   );
 };

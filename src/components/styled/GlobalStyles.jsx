@@ -11,13 +11,6 @@ export default createGlobalStyle`
     background-color: ${({ theme }) => theme.skyBlue};
     line-height: 1.2;
   }
-  
-  a {
-    color: ${({ theme }) => theme.white};
-    &:hover {
-      text-decoration: none;
-    }
-  }
 
   button {
     letter-spacing: 0.75px;

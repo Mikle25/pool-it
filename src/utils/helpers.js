@@ -3,4 +3,8 @@ const ellipsis = (string, start = 7, end = -4) => {
   return `${string.substr(0, start)}...${string.substr(end)}`;
 };
 
-export default ellipsis;
+const randomColor = () => {
+  return `#${`${Math.random().toString(16)}000000`.substring(2, 8)}`;
+};
+
+export { ellipsis, randomColor };

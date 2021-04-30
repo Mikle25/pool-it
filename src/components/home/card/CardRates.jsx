@@ -28,7 +28,7 @@ const CardRates = ({ title, text }) => {
     <Card>
       <SubTitle
         fs={theme.fs24}
-        color={theme.darkBlue}
+        color={theme.purple}
         style={{ marginBottom: '20px' }}
       >
         {title}

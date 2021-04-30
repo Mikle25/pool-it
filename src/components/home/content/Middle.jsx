@@ -25,6 +25,7 @@ const InfoWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  flex-wrap: wrap;
 `;
 
 const Img = styled.img`
@@ -38,11 +39,7 @@ const Middle = () => {
   return (
     <Info bgImg={bgContainerInfo}>
       <InfoWrapper>
-        <SubTitle
-          fs={theme.fs36}
-          color={theme.darkBlue}
-          style={{ marginBottom: '50px' }}
-        >
+        <SubTitle fs={theme.fs36} style={{ marginBottom: '50px' }}>
           What Does It Do??
         </SubTitle>
 
