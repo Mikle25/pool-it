@@ -1,7 +1,9 @@
 import colors from './colors';
 
 export default {
-  borderBlue: `5px solid ${colors.blue}`,
+  borderBlue: (color) => {
+    return `5px solid ${color}`;
+  },
   borderSkyBlue: '9px solid #44D1F6',
   borderButton: `2px solid ${colors.blue}`,
 };

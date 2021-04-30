@@ -26,7 +26,7 @@ const CardInfo = ({ title, text }) => {
 
   return (
     <Container w="50%" h="160px">
-      <SubTitle color={theme.darkBlue} fs={theme.fs24} fw="600">
+      <SubTitle fs={theme.fs24} fw="600">
         {title}
       </SubTitle>
 

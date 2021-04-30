@@ -2,14 +2,12 @@ import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import logo from '../../assets/img/logo.svg';
-import { BtnWhite } from '../styled/Btn';
 import { IconMedia } from '../styled/Icon';
 import { Text } from '../styled/Text';
 import useThemeContext from '../../hooks/useThemeContext';
-import {
-  useUserDispatchContext,
-  useUserStateContext,
-} from '../../store/userContext';
+import { useUserStateContext } from '../../store/userContext';
+import BtnCreateNewPool from '../BtnCreateNewPool';
+import BtnConnect from '../BtnConnect';
 
 const ContainerFooter = styled.footer`
   display: flex;
@@ -31,7 +29,7 @@ const Container = styled.div`
   @media (${({ theme }) => theme.xlDown}) {
     height: auto;
     flex-direction: column;
-    row-gap: 5vh;
+    row-gap: 2rem;
   }
 `;
 
@@ -77,6 +75,10 @@ const FooterUl = styled.ul`
 
   @media (${({ theme }) => theme.xlDown}) {
     row-gap: 3vh;
+  }
+
+  a {
+    color: ${({ theme }) => theme.white};
   }
 `;
 
@@ -137,7 +139,6 @@ const AppFooter = () => {
   const theme = useThemeContext();
   const currentYear = useMemo(() => new Date().getFullYear(), []);
   const { isLoggedIn } = useUserStateContext();
-  const { connect } = useUserDispatchContext();
 
   return (
     <ContainerFooter>
@@ -178,13 +179,7 @@ const AppFooter = () => {
           </FooterUl>
         </ContainerLinks>
 
-        <div>
-          {isLoggedIn ? (
-            <BtnWhite>Create new pools</BtnWhite>
-          ) : (
-            <BtnWhite onClick={connect}>Connect wallet</BtnWhite>
-          )}
-        </div>
+        <div>{isLoggedIn ? <BtnCreateNewPool /> : <BtnConnect />}</div>
       </Container>
 
       <MediaWrapper>

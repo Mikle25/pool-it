@@ -4,7 +4,7 @@ import { SubTitle } from '../../styled/Text';
 import CardRates from '../card/CardRates';
 import { BtnBig, BtnBigSkyBlue } from '../../styled/Btn';
 import useThemeContext from '../../../hooks/useThemeContext';
-import BtnWrapper from '../../styled/Wrappers';
+import { BtnWrapper } from '../../styled/Wrappers';
 
 const InfoBlockWrapper = styled.section`
   display: flex;
@@ -23,9 +23,9 @@ const Wrapper = styled.div`
   justify-content: center;
   width: 100%;
   height: 500px;
-  gap: 5vw;
+  gap: 3rem;
 
-  @media (${({ theme }) => theme.xlDown}) {
+  @media (${({ theme }) => theme.lgDown}) {
     height: 100%;
     flex-wrap: wrap;
   }
