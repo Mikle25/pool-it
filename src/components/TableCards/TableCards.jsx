@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styled from 'styled-components';
 import { Button } from 'react-bootstrap';
-import Card from './Card';
 import TblCards from '../styled/TblCards';
 import useThemeContext from '../../hooks/useThemeContext';
 
@@ -27,7 +26,7 @@ const TableCards = ({ rows, rowKey, maxHeight, content }) => {
     <>
       <TblCards style={{ overflowY: 'scroll' }} maxHeight={maxHeight}>
         {rows.map((row) => (
-          <Card row={row} key={row[rowKey]} content={content} />
+          <TblCards.Card key={row[rowKey]}>{content(row)}</TblCards.Card>
         ))}
       </TblCards>
 

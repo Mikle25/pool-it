@@ -6,7 +6,9 @@ import React, {
   useEffect,
 } from 'react';
 import PropTypes from 'prop-types';
-import Web3 from 'web3';
+import { web3 } from '../plugins/web3';
+
+const { ethereum } = window;
 
 // Default values
 const initialState = {
@@ -49,14 +51,14 @@ const useUserDispatchContext = () => {
   return context;
 };
 
+// Provider
 const UserProvider = ({ children }) => {
   const [address, setAddress] = useState('');
   const [balance, setBalance] = useState(null);
   const [isMetaMaskInstall, setMetaMaskInstall] = useState(null);
-  const web3 = new Web3(window.ethereum);
+  // const web3 = new Web3(window.ethereum);
 
   useEffect(() => {
-    const { ethereum } = window;
     return setMetaMaskInstall(Boolean(ethereum && ethereum.isMetaMask));
   }, []);
 
@@ -65,7 +67,6 @@ const UserProvider = ({ children }) => {
   }, [address]);
 
   const connectAcc = async () => {
-    const { ethereum } = window;
     try {
       const acc = await ethereum.request({
         method: 'eth_requestAccounts',
@@ -75,7 +76,8 @@ const UserProvider = ({ children }) => {
       setAddress(acc[0]);
       setBalance(bal);
     } catch (e) {
-      // console.error(e);
+      // eslint-disable-next-line no-console
+      console.error(e);
     }
   };
 
@@ -83,16 +85,17 @@ const UserProvider = ({ children }) => {
     try {
       const acc = await web3.eth.getAccounts();
       const bal = await web3.eth.getBalance(acc[0]);
+
       setAddress(acc[0]);
       setBalance(bal);
     } catch (e) {
-      // console.error(e);
+      // eslint-disable-next-line no-console
+      console.error(e);
     }
   };
 
   useEffect(() => {
     if (isMetaMaskInstall) {
-      const { ethereum } = window;
       updateAcc();
       ethereum.on('accountsChanged', updateAcc);
     }
