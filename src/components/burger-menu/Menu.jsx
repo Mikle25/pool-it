@@ -36,7 +36,7 @@ const Menu = ({ open }) => {
       {isLoggedIn ? (
         <>
           <UserAccount address={address} />
-          <LinkRout to="/enter">Enter lottery</LinkRout>
+          <LinkRout to="/lottery">Enter lottery</LinkRout>
         </>
       ) : (
         <BtnConnect />

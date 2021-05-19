@@ -55,7 +55,7 @@ const AppHeader = () => {
 
         {isLoggedIn ? (
           <>
-            <LinkRout to="/enter">Enter lottery</LinkRout>
+            <LinkRout to="/lottery">Enter lottery</LinkRout>
             <UserAccount address={address} />
           </>
         ) : (

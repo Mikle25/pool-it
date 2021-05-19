@@ -1,21 +1,30 @@
-import React, { createContext, useContext, useState, useMemo } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useMemo,
+  useEffect,
+} from 'react';
 import PropTypes from 'prop-types';
 import { useUserStateContext } from './userContext';
 import {
-  contract,
-  getContract,
-  infoPool,
-  allTransaction,
+  contractPoolFactory,
+  contractPool,
+  createPoolLottery,
+  getBalanceUSDT,
+  approveAccount,
+  setWinnerLottery,
+  participationInLottery,
 } from '../plugins/web3';
 
 // Default value
 const initialState = {
-  contractInfo: undefined,
+  poolInfo: undefined,
 };
 
 const initialDispatch = {
-  setContractInfo() {
-    throw new Error('setContractInfo() is not implemented');
+  setPoolInfo() {
+    throw new Error('setPoolInfo() is not implemented');
   },
 };
 
@@ -49,41 +58,115 @@ const useContractDispatchContext = () => {
 
 // Provider
 const ContractProvider = ({ children }) => {
-  const [contractInfo, setContractInfo] = useState('');
-  const { address } = useUserStateContext();
+  const { address, isMetaMaskInstall } = useUserStateContext();
+  const [poolInfo, setPoolInfo] = useState([]);
+  const [isAdmin, setAdmin] = useState();
+  const [poolLength, setPoolLength] = useState(0);
 
-  console.log(contract);
-  console.log(getContract);
-  infoPool(address);
-  allTransaction(address);
+  useEffect(() => {
+    if (isMetaMaskInstall) {
+      (async () => {
+        const ownerContract = await contractPoolFactory.methods.owner().call();
+
+        setAdmin(ownerContract === address);
+      })();
+    }
+  }, [address, isMetaMaskInstall]);
 
   const createNewPool = async (
     startDate,
     participationEndDate,
     endDate,
     poolCost,
+    isLottery,
+    ownerAddress,
   ) => {
     try {
-      const pool = await contract.methods
-        .createPool(startDate, participationEndDate, endDate, poolCost)
-        .send({ from: address });
-
-      setContractInfo(pool);
+      await createPoolLottery(
+        startDate,
+        participationEndDate,
+        endDate,
+        poolCost,
+        isLottery,
+        ownerAddress,
+      );
     } catch (e) {
       console.error(e);
     }
   };
 
+  useEffect(() => {
+    (async () => {
+      const res = await contractPoolFactory.methods.registryLength().call();
+      setPoolLength(res);
+    })();
+
+    const infoPools = async (item) => {
+      const poolAddress = await contractPoolFactory.methods
+        .registry(item)
+        .call();
+      const getContract = await contractPool(poolAddress);
+
+      const length = await contractPool(poolAddress)
+        .methods.participantsLength()
+        .call();
+
+      console.log(`${poolAddress}: ${length}`);
+
+      const balancePool = await getBalanceUSDT(poolAddress);
+      const startDate = await getContract.methods.startDate().call();
+      const participationEndDate = await getContract.methods
+        .participationEndDate()
+        .call();
+      const endDate = await getContract.methods.endDate().call();
+      const participationAmount = await getContract.methods
+        .participationAmount()
+        .call();
+      const poolToken = await getContract.methods.poolToken().call();
+
+      setPoolInfo((prev) => [
+        ...prev,
+        {
+          id: item + 1,
+          poolAddress,
+          startDate,
+          participationEndDate,
+          endDate,
+          participationAmount,
+          poolToken,
+          balancePool,
+        },
+      ]);
+    };
+
+    for (let i = 0; i < poolLength; i += 1) {
+      infoPools(i);
+    }
+  }, [poolLength]);
+
+  const playLottery = async (poolAddress, userAddress, participationAmount) => {
+    await approveAccount(poolAddress, userAddress, participationAmount);
+
+    await participationInLottery(poolAddress, userAddress);
+  };
+
+  const setWinner = async (poolAddress, userAddress) => {
+    await setWinnerLottery(poolAddress, userAddress);
+  };
+
   const stateValue = useMemo(() => {
     return {
-      contractInfo,
+      poolInfo,
+      isAdmin,
     };
-  }, [contractInfo]);
+  }, [poolInfo, isAdmin]);
 
   const stateDispatch = useMemo(() => {
     return {
-      setContractInfo,
+      setPoolInfo,
       createNewPool,
+      playLottery,
+      setWinner,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

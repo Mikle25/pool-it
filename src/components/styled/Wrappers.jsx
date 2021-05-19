@@ -1,7 +1,23 @@
 import styled from 'styled-components';
 import { FlexJustifyBetween } from './Flex';
 
-const ContainerPools = styled.section`
+const ContentWrap = styled.section`
+  padding: 0 14vw 3vw;
+  margin-top: 160px;
+
+  @media (${({ theme }) => theme.xlDown}) {
+    padding: 0 5vw 5vh;
+    row-gap: 15vh;
+  }
+`;
+
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  row-gap: 30px;
+`;
+
+const ContainerTable = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -20,4 +36,4 @@ const BtnWrapper = styled(FlexJustifyBetween)`
   }
 `;
 
-export { BtnWrapper, ContainerPools };
+export { BtnWrapper, ContainerTable, ContentWrap, Content };

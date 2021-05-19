@@ -10,9 +10,14 @@ export default createGlobalStyle`
     box-sizing: border-box;
     background-color: ${({ theme }) => theme.skyBlue};
     line-height: 1.2;
+    overflow-y: visible !important;
   }
 
   button {
     letter-spacing: 0.75px;
+  }
+  
+  body.modal-open {
+    padding-right: 0 !important;
   }
 `;

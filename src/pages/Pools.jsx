@@ -3,28 +3,14 @@ import styled from 'styled-components';
 import { Nav, Tab } from 'react-bootstrap';
 import bgPools from '../assets/img/bg-pools.png';
 import { useUserStateContext } from '../store/userContext';
-import BtnCreateNewPool from '../components/BtnCreateNewPool';
 import MyPools from '../components/pools/my-pools/MyPools';
 import PublicPools from '../components/pools/public-pools/PublicPools';
+import { ContentWrap, Content } from '../components/styled/Wrappers';
+import BtnCreateSavingsPool from '../components/BtnCreateSavingsPool';
 
 const Container = styled.section`
   background: url(${bgPools}) top no-repeat;
   background-size: cover;
-`;
-const ContentWrap = styled.div`
-  padding: 0 14vw 3vw;
-
-  @media (${({ theme }) => theme.xlDown}) {
-    padding: 0 5vw 5vh;
-    row-gap: 15vh;
-  }
-`;
-
-const Content = styled.section`
-  display: flex;
-  flex-direction: column;
-  row-gap: 30px;
-  margin-top: 160px;
 `;
 
 const NavTabs = styled(Nav).attrs({
@@ -95,7 +81,7 @@ const Pools = () => {
                 </NavTabs.Item>
               </TabLinkWrap>
 
-              <BtnCreateNewPool className="btn" />
+              <BtnCreateSavingsPool className="btn" />
             </NavTabs>
 
             <Tab.Content>

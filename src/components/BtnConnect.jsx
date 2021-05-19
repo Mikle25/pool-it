@@ -3,11 +3,11 @@ import { BtnWhite } from './styled/Btn';
 import { useUserDispatchContext } from '../store/userContext';
 
 const BtnConnect = () => {
-  const { connectAcc } = useUserDispatchContext();
+  const { connect } = useUserDispatchContext();
 
   return (
     <>
-      <BtnWhite onClick={connectAcc}>Connect wallet</BtnWhite>
+      <BtnWhite onClick={connect}>Connect wallet</BtnWhite>
     </>
   );
 };

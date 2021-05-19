@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import { FormControl, InputGroup } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TableCards from '../../TableCards';
-import BtnCreateNewPool from '../../BtnCreateNewPool';
 import useThemeContext from '../../../hooks/useThemeContext';
 import CardPublicPool from './CardPublicPool';
-import { ContainerPools } from '../../styled/Wrappers';
+import { ContainerTable } from '../../styled/Wrappers';
+import BtnCreateSavingsPool from '../../BtnCreateSavingsPool';
 
 const InpGroup = styled(InputGroup)`
   min-height: 40px;
@@ -76,7 +76,7 @@ const PublicPools = () => {
   const theme = useThemeContext();
 
   return (
-    <ContainerPools>
+    <ContainerTable>
       <TableCards
         rows={MockData}
         rowKey="id"
@@ -92,8 +92,8 @@ const PublicPools = () => {
         <Input placeholder="Search pool" aria-label="Search pool" />
       </InpGroup>
 
-      <BtnCreateNewPool />
-    </ContainerPools>
+      <BtnCreateSavingsPool />
+    </ContainerTable>
   );
 };
 

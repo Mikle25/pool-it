@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import TableCards from '../../TableCards';
 import CardMyPool from './CardMyPool';
 import { SubTitle } from '../../styled/Text';
-import { ContainerPools } from '../../styled/Wrappers';
+import { ContainerTable } from '../../styled/Wrappers';
 import UserActivities from './chart/UserActivities';
 import OtherInfo from './other-info/OtherInfo';
 
@@ -75,7 +75,7 @@ const mockData = [
 
 const MyPools = () => {
   return (
-    <ContainerPools>
+    <ContainerTable>
       <TableCards
         rows={mockData}
         maxHeight="750px"
@@ -90,7 +90,7 @@ const MyPools = () => {
       </Statistic>
 
       <OtherInfo />
-    </ContainerPools>
+    </ContainerTable>
   );
 };
 
