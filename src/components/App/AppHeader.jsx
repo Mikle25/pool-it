@@ -26,16 +26,16 @@ const Header = styled.header`
 
 const FlexContainer = styled(FlexJustifyBetween)`
   align-items: center;
-  gap: 5vw;
+  gap: 10vw;
 
-  @media (${({ theme }) => theme.mdDown}) {
+  @media (${({ theme }) => theme.lgDown}) {
     display: none;
   }
 `;
 
 const BurgerMenu = styled.div`
   display: none;
-  @media (${({ theme }) => theme.mdDown}) {
+  @media (${({ theme }) => theme.lgDown}) {
     display: block;
   }
 `;
@@ -53,14 +53,7 @@ const AppHeader = () => {
       <FlexContainer>
         <LinkRout to="/pools">Pools</LinkRout>
 
-        {isLoggedIn ? (
-          <>
-            <LinkRout to="/enter">Enter lottery</LinkRout>
-            <UserAccount address={address} />
-          </>
-        ) : (
-          <BtnConnect />
-        )}
+        {isLoggedIn ? <UserAccount address={address} /> : <BtnConnect />}
       </FlexContainer>
 
       <BurgerMenu>

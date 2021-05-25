@@ -8,7 +8,7 @@ const BodyWrapper = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 50px auto 10px;
+  margin: 150px auto 50px;
 `;
 
 const Body = () => {

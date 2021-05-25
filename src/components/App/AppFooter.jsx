@@ -6,7 +6,6 @@ import { IconMedia } from '../styled/Icon';
 import { Text } from '../styled/Text';
 import useThemeContext from '../../hooks/useThemeContext';
 import { useUserStateContext } from '../../store/userContext';
-import BtnCreateNewPool from '../BtnCreateNewPool';
 import BtnConnect from '../BtnConnect';
 
 const ContainerFooter = styled.footer`
@@ -182,7 +181,7 @@ const AppFooter = () => {
           </FooterUl>
         </ContainerLinks>
 
-        <div>{isLoggedIn ? <BtnCreateNewPool /> : <BtnConnect />}</div>
+        <div>{!isLoggedIn && <BtnConnect />}</div>
       </Container>
 
       <MediaWrapper>

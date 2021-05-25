@@ -40,7 +40,7 @@ const Middle = () => {
     <Info bgImg={bgContainerInfo}>
       <InfoWrapper>
         <SubTitle fs={theme.fs36} style={{ marginBottom: '50px' }}>
-          What Does It Do??
+          What Does It Do?
         </SubTitle>
 
         <Text fs={theme.fs28}>

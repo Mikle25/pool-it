@@ -2,12 +2,16 @@ import styled from 'styled-components';
 
 const Title = styled.h1`
   margin: 0;
-  font-size: ${({ theme }) => theme.fs60};
+  font-size: ${({ theme }) => theme.fs48};
   font-weight: ${({ fw }) => fw || 700};
   color: ${({ theme }) => theme.blue};
 
-  @media (${({ theme }) => theme.mdDown}) {
+  @media (${({ theme }) => theme.xlDown}) {
     font-size: ${({ theme }) => theme.fs36};
+  }
+
+  @media (${({ theme }) => theme.mdDown}) {
+    font-size: ${({ theme }) => theme.fs24};
   }
 `;
 

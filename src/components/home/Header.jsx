@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import bgMain from '../../assets/img/bg-main-page.png';
 import { Title } from '../styled/Text';
-import { BtnBig, BtnBigSkyBlue } from '../styled/Btn';
+import { BtnBig } from '../styled/Btn';
 import useThemeContext from '../../hooks/useThemeContext';
 import { BtnWrapper } from '../styled/Wrappers';
 
@@ -24,10 +25,11 @@ const Container = styled.div`
   max-width: 725px;
   display: flex;
   flex-direction: column;
-  row-gap: 60px;
+  row-gap: 150px;
 
   @media (${({ theme }) => theme.mdDown}) {
     width: auto;
+    row-gap: 100px;
   }
 `;
 
@@ -42,8 +44,9 @@ const Header = () => {
         </Title>
 
         <BtnWrapper>
-          <BtnBig fs={theme.fs32}>Start pool</BtnBig>
-          <BtnBigSkyBlue fs={theme.fs32}>Find out more</BtnBigSkyBlue>
+          <Link to="/pools">
+            <BtnBig fs={theme.fs24}>View pool</BtnBig>
+          </Link>
         </BtnWrapper>
       </Container>
     </ContainerHeader>

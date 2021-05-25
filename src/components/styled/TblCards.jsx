@@ -8,6 +8,10 @@ const TblCards = styled.div`
   flex-direction: column;
   row-gap: 20px;
   padding-bottom: 10px;
+
+  &::-webkit-scrollbar {
+    width: 0;
+  }
 `;
 
 TblCards.Card = styled.div`

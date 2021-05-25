@@ -3,9 +3,10 @@ import styled from 'styled-components';
 import TableCards from '../../TableCards';
 import CardMyPool from './CardMyPool';
 import { SubTitle } from '../../styled/Text';
-import { ContainerPools } from '../../styled/Wrappers';
+import { ContainerTable } from '../../styled/Wrappers';
 import UserActivities from './chart/UserActivities';
 import OtherInfo from './other-info/OtherInfo';
+import { usePoolsStateContext } from '../../../store/poolsContract';
 
 const Statistic = styled.section`
   display: flex;
@@ -14,73 +15,18 @@ const Statistic = styled.section`
   row-gap: 2rem;
 `;
 
-const mockData = [
-  {
-    id: 1,
-    name: 'DFAR pool №1',
-    total: 3243424,
-    value: '144.8$(@ $2,448/ETH)',
-    percent: 12.5,
-    active: 'Active',
-  },
-  {
-    id: 2,
-    name: 'DFAR pool №1',
-    total: 3243424,
-    value: '144.8$(@ $2,448/ETH)',
-    percent: 12.5,
-    active: 'Active',
-  },
-  {
-    id: 3,
-    name: 'DFAR pool №1',
-    total: 3243424,
-    value: '144.8$(@ $2,448/ETH)',
-    percent: 12.5,
-    active: 'Active',
-  },
-  {
-    id: 4,
-    name: 'DFAR pool №1',
-    total: 3243424,
-    value: '144.8$(@ $2,448/ETH)',
-    percent: 12.5,
-    active: 'Active',
-  },
-  {
-    id: 5,
-    name: 'DFAR pool №1',
-    total: 3243424,
-    value: '144.8$(@ $2,448/ETH)',
-    percent: 12.5,
-    active: 'Active',
-  },
-  {
-    id: 6,
-    name: 'DFAR pool №1',
-    total: 3243424,
-    value: '144.8$(@ $2,448/ETH)',
-    percent: 12.5,
-    active: 'Active',
-  },
-  {
-    id: 7,
-    name: 'DFAR pool №1',
-    total: 3243424,
-    value: '144.8$(@ $2,448/ETH)',
-    percent: 12.5,
-    active: 'Active',
-  },
-];
-
 const MyPools = () => {
+  const { dataPools, isLoad } = usePoolsStateContext();
+
   return (
-    <ContainerPools>
+    <ContainerTable>
       <TableCards
-        rows={mockData}
+        rows={dataPools}
         maxHeight="750px"
         rowKey="id"
-        content={(row) => <CardMyPool row={row} />}
+        loading={isLoad}
+        lengthData={dataPools.length}
+        content={(pool) => <CardMyPool pool={pool} />}
       />
 
       <Statistic>
@@ -90,7 +36,7 @@ const MyPools = () => {
       </Statistic>
 
       <OtherInfo />
-    </ContainerPools>
+    </ContainerTable>
   );
 };
 

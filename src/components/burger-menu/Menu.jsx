@@ -22,7 +22,7 @@ const StyledMenu = styled.nav`
   row-gap: 2rem;
   z-index: 5;
 
-  @media (${({ theme }) => theme.mdDown}) {
+  @media (${({ theme }) => theme.lgDown}) {
     width: 100%;
     display: flex;
   }
@@ -36,7 +36,7 @@ const Menu = ({ open }) => {
       {isLoggedIn ? (
         <>
           <UserAccount address={address} />
-          <LinkRout to="/enter">Enter lottery</LinkRout>
+          <LinkRout to="/lottery">Enter lottery</LinkRout>
         </>
       ) : (
         <BtnConnect />

@@ -36,7 +36,7 @@ const ContentFooter = () => {
 
   return (
     <InfoBlockWrapper>
-      <SubTitle>How Does It Do??</SubTitle>
+      <SubTitle>How Does It Do?</SubTitle>
 
       <Wrapper>
         <CardRates
@@ -61,8 +61,8 @@ const ContentFooter = () => {
       </Wrapper>
 
       <BtnWrapper>
-        <BtnBig fs={theme.fs36}>Start private pool</BtnBig>
-        <BtnBigSkyBlue fs={theme.fs36}>Join public pool </BtnBigSkyBlue>
+        <BtnBig fs={theme.fs24}>Create savings pool</BtnBig>
+        <BtnBigSkyBlue fs={theme.fs24}>Join lottery pool</BtnBigSkyBlue>
       </BtnWrapper>
     </InfoBlockWrapper>
   );

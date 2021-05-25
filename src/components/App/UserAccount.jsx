@@ -26,7 +26,6 @@ const UserAccount = ({ address }) => {
         />
       </IconWrapper>
       <White>{ellipsis(address)}</White>
-      <FontAwesomeIcon icon={['far', 'bell']} size="1x" color={theme.white} />
     </AccountWrapper>
   );
 };
