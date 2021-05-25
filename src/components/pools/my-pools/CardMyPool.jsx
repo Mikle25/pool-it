@@ -5,10 +5,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Btn } from '../../styled/Btn';
 import { FlexAlignItemsCenter } from '../../styled/Flex';
 import useThemeContext from '../../../hooks/useThemeContext';
-import { randomColor } from '../../../utils/helpers';
+import {
+  convertEtherToUSDT,
+  convertTimeSecToMSec,
+  randomColor,
+} from '../../../utils/helpers';
 import { IconWrapper } from '../../styled/Icon';
 import TblCards from '../../styled/TblCards';
 import { LightBlue, Purple } from '../../styled/Text';
+import { usePoolsDispatchContext } from '../../../store/poolsContract';
+import { useUserStateContext } from '../../../store/userContext';
 
 const Total = styled(FlexAlignItemsCenter)`
   min-width: fit-content;
@@ -76,8 +82,10 @@ const BodyCardName = styled(FlexAlignItemsCenter)`
   }
 `;
 
-const CardMyPool = ({ row }) => {
+const CardMyPool = ({ pool }) => {
   const theme = useThemeContext();
+  const { address } = useUserStateContext();
+  const { participation } = usePoolsDispatchContext();
 
   return (
     <>
@@ -91,37 +99,50 @@ const CardMyPool = ({ row }) => {
             />
           </IconWrapper>
 
-          <span>{row.name}</span>
+          <span>{pool.id}</span>
 
-          <span className="active">{row.active}</span>
+          {convertTimeSecToMSec(pool.participationEndDate) >
+          new Date().getTime() ? (
+            <span className="active">Active</span>
+          ) : (
+            <span className="active">Not active</span>
+          )}
         </BodyCardName>
 
-        <span>Private</span>
+        {!pool.isLottery && <span>Private</span>}
       </TblCards.Header>
 
       <TblCards.Body>
         <TotalWrap>
           <Total className="item">
             <div>Balance:</div>
-            <div>{row.total}</div>
+            <div>{convertEtherToUSDT(pool.balancePool)} USDT</div>
           </Total>
         </TotalWrap>
 
         <InfoWrap>
           <Info>
             <span>Value</span>
-            <LightBlue>{row.value}</LightBlue>
+            <LightBlue>
+              {convertEtherToUSDT(pool.participationAmount)} USDT
+            </LightBlue>
           </Info>
 
           <Info>
-            <span>Duet biahyddrot usar</span>
-            <Purple>{row.percent}%</Purple>
+            <span>APY</span>
+            <Purple>5%</Purple>
           </Info>
         </InfoWrap>
       </TblCards.Body>
 
       <TblCards.Footer>
-        <Btn className="btn-size" fs={theme.fs14}>
+        <Btn
+          className="btn-size"
+          fs={theme.fs14}
+          onClick={() => {
+            participation(pool.poolAddress, address, pool.participationAmount);
+          }}
+        >
           Deposit DFAR
         </Btn>
 
@@ -132,7 +153,7 @@ const CardMyPool = ({ row }) => {
 };
 
 CardMyPool.propTypes = {
-  row: PropTypes.objectOf(PropTypes.any).isRequired,
+  pool: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default CardMyPool;

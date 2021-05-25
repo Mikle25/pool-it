@@ -53,14 +53,7 @@ const AppHeader = () => {
       <FlexContainer>
         <LinkRout to="/pools">Pools</LinkRout>
 
-        {isLoggedIn ? (
-          <>
-            <LinkRout to="/lottery">Enter lottery</LinkRout>
-            <UserAccount address={address} />
-          </>
-        ) : (
-          <BtnConnect />
-        )}
+        {isLoggedIn ? <UserAccount address={address} /> : <BtnConnect />}
       </FlexContainer>
 
       <BurgerMenu>

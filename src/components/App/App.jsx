@@ -11,7 +11,6 @@ import '../../plugins/faLibrary';
 import AppHeader from './AppHeader';
 import AppFooter from './AppFooter';
 import { UserProvider } from '../../store/userContext';
-import { ContractProvider } from '../../store/contractContext';
 
 function App() {
   return (
@@ -23,9 +22,7 @@ function App() {
         <UserProvider>
           <AppWrapper>
             <AppHeader />
-            <ContractProvider>
-              <Routes />
-            </ContractProvider>
+            <Routes />
             <AppFooter />
           </AppWrapper>
         </UserProvider>

@@ -21,7 +21,7 @@ const convertEtherToUSDT = (amount) => {
 const convertTimeMSecToSec = (time) =>
   new Date(moment(time).format()).getTime() / 1000;
 
-const convertTimeSecToMSec = (time) => time * 1000;
+const convertTimeSecToMSec = (time) => Number(time) * 1000;
 
 export {
   ellipsis,

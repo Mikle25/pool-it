@@ -49,7 +49,7 @@ const dateShame = () =>
       .max(10000, `Max value is not more than balance ${10000}`),
   });
 
-const CreatePoolLotteryForm = ({ onSubmit, onCancel }) => {
+const CreatePoolForm = ({ onSubmit, onCancel, isAdmin }) => {
   return (
     <>
       <Formik
@@ -58,7 +58,7 @@ const CreatePoolLotteryForm = ({ onSubmit, onCancel }) => {
           participationEndDate: '',
           endDate: '',
           participationAmount: '',
-          isLottery: true,
+          isLottery: isAdmin,
         }}
         validationSchema={dateShame}
         onSubmit={(value) => {
@@ -143,6 +143,12 @@ const CreatePoolLotteryForm = ({ onSubmit, onCancel }) => {
               />
             </FormGroup>
 
+            {isAdmin && (
+              <FormGroup>
+                <BForm.Label>Is Lottery</BForm.Label>
+              </FormGroup>
+            )}
+
             <FormSubmit>
               <Button variant="danger" onClick={onCancel}>
                 Close
@@ -156,9 +162,14 @@ const CreatePoolLotteryForm = ({ onSubmit, onCancel }) => {
   );
 };
 
-CreatePoolLotteryForm.propTypes = {
+CreatePoolForm.propTypes = {
   onCancel: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
+  isAdmin: PropTypes.bool,
 };
 
-export default CreatePoolLotteryForm;
+CreatePoolForm.defaultProps = {
+  isAdmin: false,
+};
+
+export default CreatePoolForm;

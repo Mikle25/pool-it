@@ -30,7 +30,7 @@ const ContainerTable = styled.section`
 
 const BtnWrapper = styled(FlexJustifyBetween)`
   column-gap: 5vw;
-  @media (${({ theme }) => theme.smDown}) {
+  @media (${({ theme }) => theme.mdDown}) {
     flex-wrap: wrap;
     row-gap: 5vw;
   }

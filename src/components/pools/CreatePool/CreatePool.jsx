@@ -2,16 +2,20 @@ import React, { useState } from 'react';
 import { BtnWhite } from '../../styled/Btn';
 import Modal from '../../styled/Modal';
 import { SubTitle } from '../../styled/Text';
-import CreatePoolLotteryForm from './CreatePoolLotteryForm';
+import CreatePoolForm from './CreatePoolForm';
 import {
   convertTimeMSecToSec,
   convertUSDTtoEther,
 } from '../../../utils/helpers';
-import { useContractDispatchContext } from '../../../store/contractContext';
+import {
+  useLotteryDispatchContext,
+  useLotteryStateContext,
+} from '../../../store/lotteryContext';
 import { useUserStateContext } from '../../../store/userContext';
 
-const CreatePoolLottery = () => {
-  const { createNewPool } = useContractDispatchContext();
+const CreatePool = () => {
+  const { createNewPool } = useLotteryDispatchContext();
+  const { isAdmin } = useLotteryStateContext();
   const { address } = useUserStateContext();
 
   const [show, setShow] = useState(false);
@@ -61,16 +65,17 @@ const CreatePoolLottery = () => {
         </Modal.Header>
 
         <Modal.Body>
-          <CreatePoolLotteryForm
+          <CreatePoolForm
             onSubmit={handleSubmit}
             onCancel={handleClose}
+            isAdmin={isAdmin}
           />
         </Modal.Body>
       </Modal>
 
-      <BtnWhite onClick={handleShow}>Create new pool lottery</BtnWhite>
+      <BtnWhite onClick={handleShow}>Create new pool</BtnWhite>
     </>
   );
 };
 
-export default CreatePoolLottery;
+export default CreatePool;

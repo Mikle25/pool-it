@@ -7,7 +7,6 @@ import { Text } from '../styled/Text';
 import useThemeContext from '../../hooks/useThemeContext';
 import { useUserStateContext } from '../../store/userContext';
 import BtnConnect from '../BtnConnect';
-import BtnCreateSavingsPool from '../BtnCreateSavingsPool';
 
 const ContainerFooter = styled.footer`
   display: flex;
@@ -182,7 +181,7 @@ const AppFooter = () => {
           </FooterUl>
         </ContainerLinks>
 
-        <div>{isLoggedIn ? <BtnCreateSavingsPool /> : <BtnConnect />}</div>
+        <div>{!isLoggedIn && <BtnConnect />}</div>
       </Container>
 
       <MediaWrapper>

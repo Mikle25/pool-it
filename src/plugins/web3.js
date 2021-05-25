@@ -17,10 +17,9 @@ const getAccBalance = (acc) => web3.eth.getBalance(acc);
 const getAccount = () => web3.eth.getAccounts();
 
 // PoolFactory
-const contractPoolFactory = new web3.eth.Contract(
-  PoolFactory.abi,
-  process.env.REACT_APP_CONTRACT_ADDRESS_POOL_FACTORY,
-);
+const contractPoolFactory = (
+  address = process.env.REACT_APP_CONTRACT_ADDRESS_POOL_FACTORY,
+) => new web3.eth.Contract(PoolFactory.abi, address);
 
 const createPoolLottery = (
   startDate,
@@ -30,24 +29,35 @@ const createPoolLottery = (
   isLottery,
   ownerAddress,
 ) =>
-  contractPoolFactory.methods
-    .createPool(startDate, participationEndDate, endDate, poolCost, isLottery)
+  contractPoolFactory()
+    .methods.createPool(
+      startDate,
+      participationEndDate,
+      endDate,
+      poolCost,
+      isLottery,
+    )
     .send({ from: ownerAddress });
 
 const participationInLottery = (poolAddress, userAddress) =>
-  contractPoolFactory.methods
-    .participate(poolAddress)
+  contractPoolFactory()
+    .methods.participate(poolAddress)
     .send({ from: userAddress });
 
 const setWinnerLottery = (poolAddress, userAddress) =>
-  contractPoolFactory.methods
-    .liquidate(poolAddress)
-    .call({ from: userAddress })
-    .then(console.log);
+  contractPoolFactory()
+    .methods.liquidate(poolAddress)
+    .send({ from: userAddress });
+
+const claim = (poolAddress, userAddress) =>
+  contractPoolFactory().methods.claim(poolAddress).send({ from: userAddress });
 
 // Pool
 const contractPool = (address = process.env.REACT_APP_CONTRACT_ADDRESS_POOL) =>
   new web3.eth.Contract(Pool.abi, address);
+
+// const getBalanceUSDT = (poolAddress) =>
+//   contractPool(poolAddress).methods.poolBalance().call();
 
 // ERC 20
 const ierc20 = (address = process.env.REACT_APP_CONTRACT_ADDRESS_TOKEN) =>
@@ -58,7 +68,8 @@ const approveAccount = (toPool, userAddress, amount) =>
     from: userAddress,
   });
 
-const getBalanceUSDT = (address) => ierc20().methods.balanceOf(address).call();
+const getBalanceUSDT = (poolAddress) =>
+  ierc20().methods.balanceOf(poolAddress).call();
 
 export {
   connectAcc,
@@ -73,4 +84,5 @@ export {
   approveAccount,
   participationInLottery,
   setWinnerLottery,
+  claim,
 };

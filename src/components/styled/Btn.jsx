@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap';
 const Btn = styled(Button)`
    {
     min-width: fit-content;
-    padding: 10px calc(${({ theme }) => theme.radiusButton} / 2);
+    padding: 5px calc(${({ theme }) => theme.radiusButton} / 2);
     border-radius: ${({ theme }) => theme.radiusButton};
     background-color: ${({ theme, bg }) => bg || theme.blue};
     color: ${({ theme, color }) => color || theme.white};
@@ -26,7 +26,7 @@ const Btn = styled(Button)`
 `;
 
 const BtnWhite = styled(Btn)`
-  padding: 10px calc(${({ theme }) => theme.radiusButton} / 2);
+  padding: 5px calc(${({ theme }) => theme.radiusButton} / 2);
   background-color: ${({ theme, bg }) => bg || theme.white};
   color: ${({ theme }) => theme.blue};
 `;

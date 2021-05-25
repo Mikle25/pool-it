@@ -4,9 +4,11 @@ import { Nav, Tab } from 'react-bootstrap';
 import bgPools from '../assets/img/bg-pools.png';
 import { useUserStateContext } from '../store/userContext';
 import MyPools from '../components/pools/my-pools/MyPools';
-import PublicPools from '../components/pools/public-pools/PublicPools';
 import { ContentWrap, Content } from '../components/styled/Wrappers';
-import BtnCreateSavingsPool from '../components/BtnCreateSavingsPool';
+import Lottery from '../components/pools/lottery/Lottery';
+import CreatePool from '../components/pools/CreatePool';
+import { LotteryProvider } from '../store/lotteryContext';
+import { PoolsProvider } from '../store/poolsContract';
 
 const Container = styled.section`
   background: url(${bgPools}) top no-repeat;
@@ -19,11 +21,11 @@ const NavTabs = styled(Nav).attrs({
   display: flex;
   gap: 5vw;
   justify-content: space-between;
-  font-size: ${({ theme }) => theme.fs36};
+  font-size: ${({ theme }) => theme.fs24};
   font-weight: 700;
 
-  @media (${({ theme }) => theme.xlDown}) {
-    font-size: ${({ theme }) => theme.fs24};
+  @media (${({ theme }) => theme.mdDown}) {
+    font-size: ${({ theme }) => theme.fs18};
   }
 
   @media (${({ theme }) => theme.mdDown}) {
@@ -60,43 +62,45 @@ const Pools = () => {
   const { isLoggedIn } = useUserStateContext();
 
   return (
-    <Container>
-      <ContentWrap>
-        <Content>
-          <Tab.Container
-            defaultActiveKey={isLoggedIn ? 'my-pools' : 'public-pools'}
-          >
-            <NavTabs variant="pills">
-              <TabLinkWrap>
-                <NavTabs.Item>
-                  <NavTabs.Link eventKey="my-pools" disabled={!isLoggedIn}>
-                    My pools
-                  </NavTabs.Link>
-                </NavTabs.Item>
+    <LotteryProvider>
+      <PoolsProvider>
+        <Container>
+          <ContentWrap>
+            <Content>
+              <Tab.Container
+                defaultActiveKey={isLoggedIn ? 'my-pools' : 'lottery'}
+              >
+                <NavTabs variant="pills">
+                  <TabLinkWrap>
+                    <NavTabs.Item>
+                      <NavTabs.Link eventKey="my-pools" disabled={!isLoggedIn}>
+                        My pools
+                      </NavTabs.Link>
+                    </NavTabs.Item>
 
-                <NavTabs.Item>
-                  <NavTabs.Link eventKey="public-pools">
-                    Public pools
-                  </NavTabs.Link>
-                </NavTabs.Item>
-              </TabLinkWrap>
+                    <NavTabs.Item>
+                      <NavTabs.Link eventKey="lottery">Lottery</NavTabs.Link>
+                    </NavTabs.Item>
+                  </TabLinkWrap>
 
-              <BtnCreateSavingsPool className="btn" />
-            </NavTabs>
+                  {isLoggedIn && <CreatePool />}
+                </NavTabs>
 
-            <Tab.Content>
-              <Tab.Pane eventKey="my-pools">
-                <MyPools />
-              </Tab.Pane>
+                <Tab.Content>
+                  <Tab.Pane eventKey="my-pools">
+                    <MyPools />
+                  </Tab.Pane>
 
-              <Tab.Pane eventKey="public-pools">
-                <PublicPools />
-              </Tab.Pane>
-            </Tab.Content>
-          </Tab.Container>
-        </Content>
-      </ContentWrap>
-    </Container>
+                  <Tab.Pane eventKey="lottery">
+                    <Lottery />
+                  </Tab.Pane>
+                </Tab.Content>
+              </Tab.Container>
+            </Content>
+          </ContentWrap>
+        </Container>
+      </PoolsProvider>
+    </LotteryProvider>
   );
 };
 
