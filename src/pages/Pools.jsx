@@ -67,9 +67,7 @@ const Pools = () => {
         <Container>
           <ContentWrap>
             <Content>
-              <Tab.Container
-                defaultActiveKey={isLoggedIn ? 'my-pools' : 'lottery'}
-              >
+              <Tab.Container defaultActiveKey="lottery">
                 <NavTabs variant="pills">
                   <TabLinkWrap>
                     <NavTabs.Item>

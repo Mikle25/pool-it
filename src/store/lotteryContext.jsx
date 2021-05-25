@@ -86,6 +86,7 @@ const LotteryProvider = ({ children }) => {
       );
       setUpdatePools(true);
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.error(e);
     } finally {
       setUpdatePools(false);
@@ -99,6 +100,7 @@ const LotteryProvider = ({ children }) => {
       await participationInLottery(poolAddress, userAddress);
       setUpdatePools(true);
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.error(e);
     } finally {
       setUpdatePools(false);
@@ -110,6 +112,7 @@ const LotteryProvider = ({ children }) => {
       await setWinnerLottery(poolAddress, userAddress);
       setUpdatePools(true);
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.error(e);
     } finally {
       setUpdatePools(false);
@@ -121,6 +124,7 @@ const LotteryProvider = ({ children }) => {
       await claim(poolAddress, userAddress);
       setUpdatePools(true);
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.error(e);
     } finally {
       setUpdatePools(false);
@@ -139,10 +143,11 @@ const LotteryProvider = ({ children }) => {
           setPoolsLength(0);
         }
       } catch (e) {
+        // eslint-disable-next-line no-console
         console.error(e);
       }
     })();
-  }, []);
+  }, [isUpdatePools]);
 
   useEffect(() => {
     setDataLottery([]);
@@ -165,6 +170,7 @@ const LotteryProvider = ({ children }) => {
 
         setDataLottery(awaitAllPools.filter((elem) => elem.isLottery));
       } catch (e) {
+        // eslint-disable-next-line no-console
         console.error(e);
       } finally {
         setLoad(false);

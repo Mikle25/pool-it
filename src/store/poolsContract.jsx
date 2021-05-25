@@ -62,10 +62,11 @@ const PoolsProvider = ({ children }) => {
           setPoolsLength(0);
         }
       } catch (e) {
+        // eslint-disable-next-line no-console
         console.error(e);
       }
     })();
-  }, []);
+  }, [isUpdatePools]);
 
   useEffect(() => {
     setDataPools([]);
@@ -88,6 +89,7 @@ const PoolsProvider = ({ children }) => {
 
         setDataPools(awaitAllPools.filter((elem) => !elem.isLottery));
       } catch (e) {
+        // eslint-disable-next-line no-console
         console.error(e);
       } finally {
         setLoad(false);

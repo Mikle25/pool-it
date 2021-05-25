@@ -49,6 +49,7 @@ const usePool = () => {
         isLottery,
       };
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.error(e);
     }
 
@@ -66,6 +67,7 @@ const usePool = () => {
       await participationInLottery(poolAddress, userAddress);
       setUpdatePools(true);
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.error(e);
     } finally {
       setUpdatePools(false);

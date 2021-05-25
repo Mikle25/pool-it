@@ -19,7 +19,14 @@ const BtnArrow = styled(Button)`
   }
 `;
 
-const TableCards = ({ rows, rowKey, maxHeight, content, loading }) => {
+const TableCards = ({
+  rows,
+  rowKey,
+  maxHeight,
+  content,
+  loading,
+  lengthData,
+}) => {
   const theme = useThemeContext();
 
   return (
@@ -28,18 +35,26 @@ const TableCards = ({ rows, rowKey, maxHeight, content, loading }) => {
         <Spinner animation="border" variant="primary" />
       ) : (
         <>
-          <TblCards style={{ overflowY: 'scroll' }} maxHeight={maxHeight}>
-            {rows.map((row) => (
-              <TblCards.Card key={row[rowKey]}>{content(row)}</TblCards.Card>
-            ))}
-          </TblCards>
-          <BtnArrow>
-            <FontAwesomeIcon
-              icon="chevron-down"
-              color={theme.blue}
-              style={{ verticalAlign: 'middle' }}
-            />
-          </BtnArrow>
+          {!lengthData ? (
+            <span>Not data</span>
+          ) : (
+            <>
+              <TblCards style={{ overflowY: 'scroll' }} maxHeight={maxHeight}>
+                {rows.map((row) => (
+                  <TblCards.Card key={row[rowKey]}>
+                    {content(row)}
+                  </TblCards.Card>
+                ))}
+              </TblCards>
+              <BtnArrow>
+                <FontAwesomeIcon
+                  icon="chevron-down"
+                  color={theme.blue}
+                  style={{ verticalAlign: 'middle' }}
+                />
+              </BtnArrow>
+            </>
+          )}
         </>
       )}
     </>
@@ -52,10 +67,12 @@ TableCards.propTypes = {
   maxHeight: PropTypes.string,
   content: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
+  lengthData: PropTypes.number,
 };
 
 TableCards.defaultProps = {
   maxHeight: '100%',
+  lengthData: 0,
 };
 
 export default TableCards;
