@@ -20,17 +20,14 @@ const MyPools = () => {
 
   return (
     <ContainerTable>
-      {!dataPools ? (
-        <div>Not data</div>
-      ) : (
-        <TableCards
-          rows={dataPools}
-          maxHeight="750px"
-          rowKey="id"
-          loading={isLoad}
-          content={(pool) => <CardMyPool pool={pool} />}
-        />
-      )}
+      <TableCards
+        rows={dataPools}
+        maxHeight="750px"
+        rowKey="id"
+        loading={isLoad}
+        lengthData={dataPools.length}
+        content={(pool) => <CardMyPool pool={pool} />}
+      />
 
       <Statistic>
         <SubTitle>Statistic</SubTitle>

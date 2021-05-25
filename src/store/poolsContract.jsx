@@ -65,7 +65,7 @@ const PoolsProvider = ({ children }) => {
         console.error(e);
       }
     })();
-  }, []);
+  }, [isUpdatePools]);
 
   useEffect(() => {
     setDataPools([]);

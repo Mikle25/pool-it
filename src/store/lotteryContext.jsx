@@ -142,7 +142,7 @@ const LotteryProvider = ({ children }) => {
         console.error(e);
       }
     })();
-  }, []);
+  }, [isUpdatePools]);
 
   useEffect(() => {
     setDataLottery([]);

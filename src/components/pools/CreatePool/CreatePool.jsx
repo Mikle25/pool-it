@@ -34,13 +34,6 @@ const CreatePool = () => {
     isLottery,
   }) => {
     setShow(false);
-    console.log(
-      convertTimeMSecToSec(startDate),
-      convertTimeMSecToSec(participationEndDate),
-      convertTimeMSecToSec(endDate),
-      convertUSDTtoEther(participationAmount),
-      isLottery,
-    );
     createNewPool(
       convertTimeMSecToSec(startDate),
       convertTimeMSecToSec(participationEndDate),

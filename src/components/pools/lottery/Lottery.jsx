@@ -33,19 +33,14 @@ const Lottery = () => {
 
   return (
     <ContainerTable>
-      <>
-        {!dataLottery ? (
-          <span>Not data</span>
-        ) : (
-          <TableCards
-            rows={dataLottery}
-            rowKey="id"
-            maxHeight="600px"
-            loading={isLoad}
-            content={(pool) => <CardLottery pool={pool} />}
-          />
-        )}
-      </>
+      <TableCards
+        rows={dataLottery}
+        rowKey="id"
+        maxHeight="600px"
+        loading={isLoad}
+        lengthData={dataLottery.length}
+        content={(pool) => <CardLottery pool={pool} />}
+      />
 
       <InpGroup>
         <InputGroup.Prepend>
