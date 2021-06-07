@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Btn } from '../../styled/Btn';
+import { Btn, BtnLink } from '../../styled/Btn';
 import { FlexAlignItemsCenter } from '../../styled/Flex';
 import useThemeContext from '../../../hooks/useThemeContext';
 import {
@@ -146,7 +146,7 @@ const CardMyPool = ({ pool }) => {
           Deposit DFAR
         </Btn>
 
-        <div>View pool</div>
+        <BtnLink>View pool</BtnLink>
       </TblCards.Footer>
     </>
   );

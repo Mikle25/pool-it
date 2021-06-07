@@ -12,8 +12,6 @@ const connectAcc = () =>
     method: 'eth_requestAccounts',
   });
 
-const getAccBalance = (acc) => web3.eth.getBalance(acc);
-
 const getAccount = () => web3.eth.getAccounts();
 
 // PoolFactory
@@ -73,7 +71,6 @@ const getBalanceUSDT = (poolAddress) =>
 
 export {
   connectAcc,
-  getAccBalance,
   getAccount,
   web3,
   contractPoolFactory,

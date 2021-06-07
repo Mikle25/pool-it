@@ -10,6 +10,7 @@ import { BtnWrapper } from '../styled/Wrappers';
 const ContainerHeader = styled.section`
   display: flex;
   align-items: flex-end;
+  height: 100vh;
   background: url(${bgMain}) right no-repeat;
   background-size: cover;
   padding: 170px 14vw 3vw;

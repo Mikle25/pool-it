@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import {
   approveAccount,
   contractPool,
@@ -7,9 +7,7 @@ import {
   participationInLottery,
 } from '../plugins/web3';
 
-const usePool = () => {
-  const [isUpdatePools, setUpdatePools] = useState(false);
-
+const usePool = (setUpdatePools) => {
   const dataFromPool = useCallback(async (num, index) => {
     try {
       const poolAddress = await contractPoolFactory()
@@ -77,7 +75,6 @@ const usePool = () => {
   return {
     dataFromPool,
     participation,
-    isUpdatePools,
   };
 };
 

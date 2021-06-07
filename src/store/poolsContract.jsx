@@ -46,13 +46,12 @@ const usePoolsDispatchContext = () => {
 // Provider
 const PoolsProvider = ({ children }) => {
   const [poolsLength, setPoolsLength] = useState(0);
-  const [isLoad, setLoad] = useState(false);
+  const [isLoad, setLoad] = useState(true);
   const [dataPools, setDataPools] = useState([]);
-  const { dataFromPool, isUpdatePools, participation } = usePool();
+  const [isUpdatePools, setUpdatePools] = useState(false);
+  const { dataFromPool, participation } = usePool(setUpdatePools);
 
   useEffect(() => {
-    setDataPools([]);
-
     (async () => {
       try {
         const res = await contractPoolFactory().methods.registryLength().call();
@@ -69,8 +68,6 @@ const PoolsProvider = ({ children }) => {
   }, [isUpdatePools]);
 
   useEffect(() => {
-    setDataPools([]);
-
     (async () => {
       const arr = new Array(poolsLength)
         .fill(null)
@@ -95,6 +92,11 @@ const PoolsProvider = ({ children }) => {
         setLoad(false);
       }
     })();
+
+    return () => {
+      setLoad(true);
+      setDataPools([]);
+    };
   }, [dataFromPool, poolsLength, isUpdatePools]);
 
   const stateValue = useMemo(() => {

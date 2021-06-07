@@ -10,9 +10,7 @@ import { useUserStateContext } from './userContext';
 import {
   contractPoolFactory,
   createPoolLottery,
-  approveAccount,
   setWinnerLottery,
-  participationInLottery,
   claim,
 } from '../plugins/web3';
 import usePool from '../hooks/usePool';
@@ -53,7 +51,7 @@ const LotteryProvider = ({ children }) => {
   const [poolsLength, setPoolsLength] = useState(0);
   const [isUpdatePools, setUpdatePools] = useState(false);
   const [isLoad, setLoad] = useState(true);
-  const { dataFromPool } = usePool();
+  const { dataFromPool, participation: playLottery } = usePool(setUpdatePools);
 
   useEffect(() => {
     if (isMetaMaskInstall) {
@@ -93,20 +91,6 @@ const LotteryProvider = ({ children }) => {
     }
   };
 
-  const playLottery = async (poolAddress, userAddress, participationAmount) => {
-    try {
-      await approveAccount(poolAddress, userAddress, participationAmount);
-
-      await participationInLottery(poolAddress, userAddress);
-      setUpdatePools(true);
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error(e);
-    } finally {
-      setUpdatePools(false);
-    }
-  };
-
   const setWinner = async (poolAddress, userAddress) => {
     try {
       await setWinnerLottery(poolAddress, userAddress);
@@ -132,8 +116,6 @@ const LotteryProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    setDataLottery([]);
-
     (async () => {
       try {
         const res = await contractPoolFactory().methods.registryLength().call();
@@ -150,8 +132,6 @@ const LotteryProvider = ({ children }) => {
   }, [isUpdatePools]);
 
   useEffect(() => {
-    setDataLottery([]);
-
     (async () => {
       const arr = new Array(poolsLength)
         .fill(null)
@@ -176,6 +156,11 @@ const LotteryProvider = ({ children }) => {
         setLoad(false);
       }
     })();
+
+    return () => {
+      setLoad(false);
+      setDataLottery([]);
+    };
   }, [poolsLength, isUpdatePools, dataFromPool]);
 
   const stateValue = useMemo(() => {
@@ -195,6 +180,7 @@ const LotteryProvider = ({ children }) => {
       setWinner,
       takeAmountWin,
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
