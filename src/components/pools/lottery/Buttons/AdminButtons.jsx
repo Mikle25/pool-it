@@ -24,8 +24,12 @@ const AdminButtons = ({ poolAddress, userAddress, liquidated }) => {
 
 AdminButtons.propTypes = {
   poolAddress: PropTypes.string.isRequired,
-  userAddress: PropTypes.string.isRequired,
+  userAddress: PropTypes.string,
   liquidated: PropTypes.bool.isRequired,
+};
+
+AdminButtons.defaultProps = {
+  userAddress: '',
 };
 
 export default AdminButtons;

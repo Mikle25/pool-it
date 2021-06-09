@@ -85,8 +85,9 @@ const UserProvider = ({ children }) => {
 
   useEffect(() => {
     if (isMetaMaskInstall) {
-      ethereum.on('accountsChanged', updateAcc);
       updateAcc();
+      ethereum.on('accountsChanged', updateAcc);
+      ethereum.on('disconnect', updateAcc);
     }
   });
 

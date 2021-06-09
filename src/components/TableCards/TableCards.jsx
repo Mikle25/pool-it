@@ -31,30 +31,23 @@ const TableCards = ({
 
   return (
     <>
-      {loading ? (
-        <Spinner animation="border" variant="primary" />
-      ) : (
+      {loading && <Spinner animation="border" variant="primary" />}
+
+      {!!lengthData && (
         <>
-          {!lengthData ? (
-            <span>Not data</span>
-          ) : (
-            <>
-              <TblCards style={{ overflowY: 'scroll' }} maxHeight={maxHeight}>
-                {rows.map((row) => (
-                  <TblCards.Card key={row[rowKey]}>
-                    {content(row)}
-                  </TblCards.Card>
-                ))}
-              </TblCards>
-              <BtnArrow>
-                <FontAwesomeIcon
-                  icon="chevron-down"
-                  color={theme.blue}
-                  style={{ verticalAlign: 'middle' }}
-                />
-              </BtnArrow>
-            </>
-          )}
+          <TblCards style={{ overflowY: 'scroll' }} maxHeight={maxHeight}>
+            {rows.map((row) => (
+              <TblCards.Card key={row[rowKey]}>{content(row)}</TblCards.Card>
+            ))}
+          </TblCards>
+
+          <BtnArrow>
+            <FontAwesomeIcon
+              icon="chevron-down"
+              color={theme.blue}
+              style={{ verticalAlign: 'middle' }}
+            />
+          </BtnArrow>
         </>
       )}
     </>
@@ -72,7 +65,7 @@ TableCards.propTypes = {
 
 TableCards.defaultProps = {
   maxHeight: '100%',
-  lengthData: 0,
+  lengthData: null,
 };
 
 export default TableCards;

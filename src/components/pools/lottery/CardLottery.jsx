@@ -82,7 +82,11 @@ const CardLottery = ({ pool }) => {
 };
 
 CardLottery.propTypes = {
-  pool: PropTypes.objectOf(PropTypes.any).isRequired,
+  pool: PropTypes.objectOf(PropTypes.any),
+};
+
+CardLottery.defaultProps = {
+  pool: {},
 };
 
 export default CardLottery;
