@@ -33,10 +33,10 @@ const Times = ({
   liquidated,
 }) => {
   const [time, setTime] = useState({
-    seconds: '--',
-    minutes: '--',
-    hours: '--',
-    days: '-',
+    seconds: '00',
+    minutes: '00',
+    hours: '00',
+    days: '0',
   });
   const participationEndDateLottery = convertTimeSecToMSec(
     participationEndDate,
@@ -74,10 +74,10 @@ const Times = ({
       if (nowDate > participationEndDateLottery) {
         setShowBtn(false);
         return setTime({
-          seconds: '--',
-          minutes: '--',
-          hours: '--',
-          days: '-',
+          seconds: '00',
+          minutes: '00',
+          hours: '00',
+          days: '0',
         });
       }
 

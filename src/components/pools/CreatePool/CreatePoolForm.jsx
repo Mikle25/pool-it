@@ -4,45 +4,50 @@ import { Field, Form, Formik, ErrorMessage } from 'formik';
 import { Button, Form as BForm } from 'react-bootstrap';
 import * as Yup from 'yup';
 import moment from 'moment';
+import styled from 'styled-components';
 import { FormSubmit, FormGroup } from '../../styled/Form';
+import DatePicker from '../../CustomDatePicker';
+
+const ErrorMsg = styled.div`
+  margin-top: 5px;
+  color: red;
+  font-size: 12px;
+`;
 
 const dateShame = () =>
   Yup.object({
-    startDate: Yup.string()
-      .required('Require')
-      .test(
-        '',
-        'The start date cannot be less than the current one',
-        (value) => {
-          const today = moment(new Date()).format();
-          return value >= today;
-        },
-      ),
+    participationEndDate: Yup.date().test({
+      name: 'startDate',
+      exclusive: false,
+      params: {},
+      message: 'End date cannot be less than start date',
+      test(value) {
+        const startDate = moment(this.parent.startDate).valueOf();
+        const endDate = moment(value).valueOf();
 
-    participationEndDate: Yup.string()
-      .required('Require')
-      .test({
-        name: 'startDate',
-        exclusive: false,
-        params: {},
-        message: 'End date cannot be less than start date',
-        test(value) {
-          return value > this.parent.startDate;
-        },
-      }),
+        return (
+          moment(startDate).isSameOrBefore(moment(endDate)) &&
+          !moment(startDate).isSame(moment(endDate))
+        );
+      },
+    }),
 
-    endDate: Yup.string()
-      .required('Require')
-      .test({
-        name: 'participationEndDate',
-        exclusive: false,
-        params: {},
-        message: 'The draw date cannot be less than the end date',
-        test(value) {
-          return value > this.parent.participationEndDate;
-        },
-      }),
+    endDate: Yup.date().test({
+      name: 'participationEndDate',
+      exclusive: false,
+      params: {},
+      message: 'The draw date cannot be less than the end date',
+      test(value) {
+        const participationEndDate = moment(
+          this.parent.participationEndDate,
+        ).valueOf();
+        const endDate = moment(value).valueOf();
 
+        return moment(participationEndDate).isSameOrBefore(moment(endDate));
+      },
+    }),
+
+    // refactor max = balance users
     participationAmount: Yup.number()
       .required('Require')
       .min(1, `Min cost of participation ${1}`)
@@ -54,75 +59,56 @@ const CreatePoolForm = ({ onSubmit, onCancel, isAdmin }) => {
     <>
       <Formik
         initialValues={{
-          startDate: '',
-          participationEndDate: '',
-          endDate: '',
+          startDate: moment().startOf().toDate(),
+          participationEndDate: moment().startOf().toDate(),
+          endDate: moment().startOf().toDate(),
           participationAmount: '',
           isLottery: isAdmin,
         }}
         validationSchema={dateShame}
-        onSubmit={(value) => {
+        onSubmit={(value, { setSubmitting }) => {
           onSubmit(value);
+          setSubmitting(false);
         }}
       >
-        {({ errors, touched }) => (
+        {({
+          isSubmitting,
+          errors,
+          touched,
+          setFieldValue,
+          setFieldTouched,
+        }) => (
           <Form>
             <FormGroup>
               <BForm.Label>Start date</BForm.Label>
 
-              <Field
-                as={BForm.Control}
-                name="startDate"
-                type="datetime-local"
-                isInvalid={!!errors.startDate && touched.startDate}
-                isValid={!errors.startDate && touched.startDate}
-              />
-
-              <ErrorMessage
-                component={BForm.Control.Feedback}
-                name="startDate"
-                type="invalid"
-              />
+              <DatePicker disabled />
             </FormGroup>
 
             <FormGroup>
               <BForm.Label>Participation end date</BForm.Label>
 
-              <Field
-                as={BForm.Control}
-                name="participationEndDate"
-                type="datetime-local"
-                isInvalid={
-                  !!errors.participationEndDate && touched.participationEndDate
-                }
-                isValid={
-                  !errors.participationEndDate && touched.participationEndDate
-                }
+              <DatePicker
+                onChange={(value) => {
+                  setFieldValue('participationEndDate', value);
+                  setFieldTouched('participationEndDate', true);
+                }}
               />
 
-              <ErrorMessage
-                component={BForm.Control.Feedback}
-                name="participationEndDate"
-                type="invalid"
-              />
+              <ErrorMessage name="participationEndDate" component={ErrorMsg} />
             </FormGroup>
 
             <FormGroup>
               <BForm.Label>Date choose winner</BForm.Label>
 
-              <Field
-                as={BForm.Control}
-                name="endDate"
-                type="datetime-local"
-                isInvalid={!!errors.endDate && touched.endDate}
-                isValid={!errors.endDate && touched.endDate}
+              <DatePicker
+                onChange={(value) => {
+                  setFieldValue('endDate', value);
+                  setFieldTouched('endDate', true);
+                }}
               />
 
-              <ErrorMessage
-                component={BForm.Control.Feedback}
-                name="endDate"
-                type="invalid"
-              />
+              <ErrorMessage name="endDate" component={ErrorMsg} />
             </FormGroup>
 
             <FormGroup>
@@ -136,11 +122,7 @@ const CreatePoolForm = ({ onSubmit, onCancel, isAdmin }) => {
                 isValid={!errors.poolCost && touched.poolCost}
               />
 
-              <ErrorMessage
-                component={BForm.Control.Feedback}
-                name="participationAmount"
-                type="invalid"
-              />
+              <ErrorMessage component={ErrorMsg} name="participationAmount" />
             </FormGroup>
 
             {isAdmin && (
@@ -153,7 +135,10 @@ const CreatePoolForm = ({ onSubmit, onCancel, isAdmin }) => {
               <Button variant="danger" onClick={onCancel}>
                 Close
               </Button>
-              <Button type="submit">Confirm</Button>
+
+              <Button type="submit" disabled={isSubmitting}>
+                Confirm
+              </Button>
             </FormSubmit>
           </Form>
         )}
