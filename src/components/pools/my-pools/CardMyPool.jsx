@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Link } from 'react-router-dom';
 import { Btn, BtnLink } from '../../styled/Btn';
 import { FlexAlignItemsCenter } from '../../styled/Flex';
 import useThemeContext from '../../../hooks/useThemeContext';
@@ -146,7 +147,9 @@ const CardMyPool = ({ pool }) => {
           Deposit DFAR
         </Btn>
 
-        <BtnLink>View pool</BtnLink>
+        <BtnLink as={Link} to={`/pools/${pool.poolAddress}`}>
+          View pool
+        </BtnLink>
       </TblCards.Footer>
     </>
   );
