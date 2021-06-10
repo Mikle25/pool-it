@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import { connectAcc, getAccount } from '../plugins/web3';
+import HandlerError from '../utils/errorsHandler';
 
 const { ethereum } = window;
 
@@ -66,8 +67,7 @@ const UserProvider = ({ children }) => {
 
       setAddress(acc[0]);
     } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error(e);
+      HandlerError(e);
     }
   };
 
@@ -78,8 +78,7 @@ const UserProvider = ({ children }) => {
       setAddress(acc[0]);
     } catch (e) {
       setAddress('');
-      // eslint-disable-next-line no-console
-      console.error(e);
+      HandlerError(e);
     }
   };
 

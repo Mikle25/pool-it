@@ -14,6 +14,7 @@ import {
   claim,
 } from '../plugins/web3';
 import usePool from '../hooks/usePool';
+import HandlerError from '../utils/errorsHandler';
 
 // State context
 const LotteryStateContext = createContext(undefined);
@@ -84,8 +85,7 @@ const LotteryProvider = ({ children }) => {
       );
       setUpdatePools(true);
     } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error(e);
+      HandlerError(e);
     } finally {
       setUpdatePools(false);
     }
@@ -96,8 +96,7 @@ const LotteryProvider = ({ children }) => {
       await setWinnerLottery(poolAddress, userAddress);
       setUpdatePools(true);
     } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error(e);
+      HandlerError(e);
     } finally {
       setUpdatePools(false);
     }
@@ -108,8 +107,7 @@ const LotteryProvider = ({ children }) => {
       await claim(poolAddress, userAddress);
       setUpdatePools(true);
     } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error(e);
+      HandlerError(e);
     } finally {
       setUpdatePools(false);
     }
@@ -125,8 +123,7 @@ const LotteryProvider = ({ children }) => {
           setPoolsLength(0);
         }
       } catch (e) {
-        // eslint-disable-next-line no-console
-        console.error(e);
+        HandlerError(e);
       }
     })();
   }, [isUpdatePools]);
@@ -150,8 +147,7 @@ const LotteryProvider = ({ children }) => {
 
         setDataLottery(awaitAllPools.filter((elem) => elem.isLottery));
       } catch (e) {
-        // eslint-disable-next-line no-console
-        console.error(e);
+        HandlerError(e);
       } finally {
         setLoad(false);
       }

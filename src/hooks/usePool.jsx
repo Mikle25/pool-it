@@ -6,6 +6,7 @@ import {
   getBalanceUSDT,
   participationInLottery,
 } from '../plugins/web3';
+import HandlerError from '../utils/errorsHandler';
 
 const usePool = (setUpdatePools) => {
   const dataFromPool = useCallback(async (num, index) => {
@@ -47,8 +48,7 @@ const usePool = (setUpdatePools) => {
         isLottery,
       };
     } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error(e);
+      HandlerError(e);
     }
 
     return [];
@@ -65,8 +65,7 @@ const usePool = (setUpdatePools) => {
       await participationInLottery(poolAddress, userAddress);
       setUpdatePools(true);
     } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error(e);
+      HandlerError(e);
     } finally {
       setUpdatePools(false);
     }

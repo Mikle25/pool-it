@@ -12,6 +12,7 @@ import {
   // participationInLottery,
 } from '../plugins/web3';
 import usePool from '../hooks/usePool';
+import HandlerError from '../utils/errorsHandler';
 
 // State context
 const PoolsStateContext = createContext(undefined);
@@ -61,8 +62,7 @@ const PoolsProvider = ({ children }) => {
           setPoolsLength(0);
         }
       } catch (e) {
-        // eslint-disable-next-line no-console
-        console.error(e);
+        HandlerError(e);
       }
     })();
   }, [isUpdatePools]);
@@ -86,8 +86,7 @@ const PoolsProvider = ({ children }) => {
 
         setDataPools(awaitAllPools.filter((elem) => !elem.isLottery));
       } catch (e) {
-        // eslint-disable-next-line no-console
-        console.error(e);
+        HandlerError(e);
       } finally {
         setLoad(false);
       }
