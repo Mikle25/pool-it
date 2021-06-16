@@ -6,13 +6,10 @@ import React, {
   useState,
 } from 'react';
 import PropTypes from 'prop-types';
-import {
-  // approveAccount,
-  contractPoolFactory,
-  // participationInLottery,
-} from '../plugins/web3';
-import usePool from '../hooks/usePool';
-import HandlerError from '../utils/errorsHandler';
+import { contractSavingPoolFactory, createSavingPool } from '../plugins/web3';
+import handlerError from '../utils/errorsHandler';
+import { useUserStateContext } from './userContext';
+import useSavingPool from '../hooks/useSavingPool';
 
 // State context
 const PoolsStateContext = createContext(undefined);
@@ -46,47 +43,55 @@ const usePoolsDispatchContext = () => {
 
 // Provider
 const PoolsProvider = ({ children }) => {
+  const { address } = useUserStateContext();
   const [poolsLength, setPoolsLength] = useState(0);
   const [isLoad, setLoad] = useState(true);
   const [dataPools, setDataPools] = useState([]);
   const [isUpdatePools, setUpdatePools] = useState(false);
-  const { dataFromPool, participation } = usePool(setUpdatePools);
+  const { dataFromPool, claimPool } = useSavingPool(address);
 
   useEffect(() => {
     (async () => {
       try {
-        const res = await contractPoolFactory().methods.registryLength().call();
+        const res = await contractSavingPoolFactory()
+          .methods.userPoolsLength(address)
+          .call();
+
         if (Number(res) > 0) {
           setPoolsLength(Number(res));
         } else {
           setPoolsLength(0);
         }
       } catch (e) {
-        HandlerError(e);
+        handlerError(e);
       }
     })();
-  }, [isUpdatePools]);
+  }, [address, isUpdatePools]);
 
   useEffect(() => {
     (async () => {
       const arr = new Array(poolsLength)
         .fill(null)
-        .map((elem, index) => index)
-        .reverse();
+        .map((_, index) => index)
+        .reverse()
+        .slice(0, 4);
 
       try {
         setLoad(true);
 
         const awaitAllPools = await Promise.all(
-          arr.map(async (num, index) => {
-            const res = await dataFromPool(num, index);
+          arr.map(async (_, index) => {
+            const poolAddress = await contractSavingPoolFactory()
+              .methods.userPool(address, index)
+              .call();
+            const res = await dataFromPool(poolAddress, index);
             return res;
           }),
         );
 
         setDataPools(awaitAllPools.filter((elem) => !elem.isLottery));
       } catch (e) {
-        HandlerError(e);
+        handlerError(e);
       } finally {
         setLoad(false);
       }
@@ -96,7 +101,19 @@ const PoolsProvider = ({ children }) => {
       setLoad(true);
       setDataPools([]);
     };
-  }, [dataFromPool, poolsLength, isUpdatePools]);
+  }, [address, dataFromPool, poolsLength]);
+
+  // Methods saving pool
+  const createNewSavingPool = async () => {
+    try {
+      await createSavingPool(address);
+      setUpdatePools(true);
+    } catch (e) {
+      handlerError(e);
+    } finally {
+      setUpdatePools(false);
+    }
+  };
 
   const stateValue = useMemo(() => {
     return {
@@ -107,7 +124,8 @@ const PoolsProvider = ({ children }) => {
 
   const stateDispatch = useMemo(() => {
     return {
-      participation,
+      createNewSavingPool,
+      claimPool,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

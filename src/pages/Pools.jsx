@@ -8,7 +8,7 @@ import { ContentWrap, Content } from '../components/styled/Wrappers';
 import Lottery from '../components/pools/lottery/Lottery';
 import CreatePool from '../components/pools/CreatePool';
 import { LotteryProvider } from '../store/lotteryContext';
-import { PoolsProvider } from '../store/poolsContract';
+import { PoolsProvider } from '../store/poolsContext';
 
 const Container = styled.section`
   background: url(${bgPools}) top no-repeat;

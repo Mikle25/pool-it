@@ -1,5 +1,5 @@
 import React from 'react';
-import { BtnWhite } from './styled/Btn';
+import { BtnWhite } from './styled/Btns';
 import { useUserStateContext } from '../store/userContext';
 
 const BtnCreateSavingsPool = () => {

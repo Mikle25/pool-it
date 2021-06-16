@@ -6,8 +6,8 @@ import React, {
   useEffect,
 } from 'react';
 import PropTypes from 'prop-types';
-import { connectAcc, getAccount } from '../plugins/web3';
-import HandlerError from '../utils/errorsHandler';
+import { web3 } from '../plugins/web3';
+import handlerError from '../utils/errorsHandler';
 
 const { ethereum } = window;
 
@@ -51,10 +51,9 @@ const useUserDispatchContext = () => {
 // Provider
 const UserProvider = ({ children }) => {
   const [address, setAddress] = useState('');
-  const [isMetaMaskInstall, setMetaMaskInstall] = useState(null);
 
-  useEffect(() => {
-    return setMetaMaskInstall(Boolean(ethereum && ethereum.isMetaMask));
+  const isMetaMaskInstall = useMemo(() => {
+    return Boolean(ethereum && ethereum.isMetaMask);
   }, []);
 
   const isLoggedIn = useMemo(() => {
@@ -63,29 +62,31 @@ const UserProvider = ({ children }) => {
 
   const connect = async () => {
     try {
-      const acc = await connectAcc();
+      const acc = await ethereum.request({
+        method: 'eth_requestAccounts',
+      });
 
       setAddress(acc[0]);
     } catch (e) {
-      HandlerError(e);
+      handlerError(e);
     }
   };
 
   const updateAcc = async () => {
     try {
-      const acc = await getAccount();
+      const acc = await web3.eth.getAccounts();
 
       setAddress(acc[0]);
     } catch (e) {
       setAddress('');
-      HandlerError(e);
+      handlerError(e);
     }
   };
 
   useEffect(() => {
     if (isMetaMaskInstall) {
-      ethereum.on('accountsChanged', updateAcc);
       updateAcc();
+      ethereum.on('accountsChanged', updateAcc);
     }
   });
 

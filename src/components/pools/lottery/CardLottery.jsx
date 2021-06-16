@@ -52,9 +52,9 @@ const CardLottery = ({ pool }) => {
         />
 
         <BalancePool>
-          <span>Rate: {convertEtherToUSDT(pool.participationAmount)} USDT</span>
+          <span>Rate: {convertEtherToUSDT(pool.participationAmount)}</span>
 
-          <span>Balance: {convertEtherToUSDT(pool.balancePool)} USDT</span>
+          <span>Balance: {convertEtherToUSDT(pool.balancePool)}</span>
         </BalancePool>
 
         {isAdmin ? (
@@ -62,7 +62,6 @@ const CardLottery = ({ pool }) => {
             {!showBtn && (
               <AdminButtons
                 poolAddress={pool.poolAddress}
-                userAddress={address}
                 liquidated={pool.liquidated}
               />
             )}

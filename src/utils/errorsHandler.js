@@ -7,7 +7,7 @@ const ErrorMsg = {
   4001: 'User denied transaction signature',
 };
 
-const HandlerError = (err) => {
+const handlerError = (err) => {
   // eslint-disable-next-line no-console
   console.error(err);
 
@@ -21,4 +21,4 @@ const HandlerError = (err) => {
   return toast.error(errorText);
 };
 
-export default HandlerError;
+export default handlerError;

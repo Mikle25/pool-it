@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Btn } from '../../../styled/Btn';
+import { Btn } from '../../../styled/Btns';
 import { useLotteryDispatchContext } from '../../../../store/lotteryContext';
 
 const UserButtons = ({
@@ -19,7 +19,7 @@ const UserButtons = ({
           {userAddress === winner ? (
             <Btn
               onClick={() => {
-                takeAmountWin(poolAddress, userAddress);
+                takeAmountWin(poolAddress);
               }}
             >
               Get your winnings
@@ -29,9 +29,7 @@ const UserButtons = ({
               {showBtnPlay && (
                 <Btn
                   style={{ width: '200px' }}
-                  onClick={() =>
-                    playLottery(poolAddress, userAddress, participationAmount)
-                  }
+                  onClick={() => playLottery(poolAddress, participationAmount)}
                 >
                   Play
                 </Btn>

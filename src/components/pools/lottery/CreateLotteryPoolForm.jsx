@@ -6,6 +6,11 @@ import * as Yup from 'yup';
 import moment from 'moment';
 import styled from 'styled-components';
 import { FormSubmit, FormGroup } from '../../styled/Form';
+import {
+  convertTimeMSecToSec,
+  convertUSDTtoEther,
+} from '../../../utils/helpers';
+import { useLotteryDispatchContext } from '../../../store/lotteryContext';
 import DatePicker from '../../CustomDatePicker';
 
 const ErrorMsg = styled.div`
@@ -54,7 +59,25 @@ const dateShame = () =>
       .max(10000, `Max value is not more than balance ${10000}`),
   });
 
-const CreatePoolForm = ({ onSubmit, onCancel, isAdmin }) => {
+const CreateLotteryPoolForm = ({ setShow, onCancel, isAdmin }) => {
+  const { createNewPool } = useLotteryDispatchContext();
+
+  const handleSubmit = ({
+    startDate,
+    participationEndDate,
+    endDate,
+    participationAmount,
+    isLottery,
+  }) => {
+    createNewPool(
+      convertTimeMSecToSec(startDate),
+      convertTimeMSecToSec(participationEndDate),
+      convertTimeMSecToSec(endDate),
+      convertUSDTtoEther(participationAmount),
+      isLottery,
+    );
+  };
+
   return (
     <>
       <Formik
@@ -66,9 +89,9 @@ const CreatePoolForm = ({ onSubmit, onCancel, isAdmin }) => {
           isLottery: isAdmin,
         }}
         validationSchema={dateShame}
-        onSubmit={(value, { setSubmitting }) => {
-          onSubmit(value);
-          setSubmitting(false);
+        onSubmit={(value) => {
+          setShow(false);
+          handleSubmit(value);
         }}
       >
         {({
@@ -132,7 +155,7 @@ const CreatePoolForm = ({ onSubmit, onCancel, isAdmin }) => {
             )}
 
             <FormSubmit>
-              <Button variant="danger" onClick={onCancel}>
+              <Button variant="secondary" onClick={onCancel}>
                 Close
               </Button>
 
@@ -147,14 +170,14 @@ const CreatePoolForm = ({ onSubmit, onCancel, isAdmin }) => {
   );
 };
 
-CreatePoolForm.propTypes = {
+CreateLotteryPoolForm.propTypes = {
   onCancel: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,
   isAdmin: PropTypes.bool,
+  setShow: PropTypes.func.isRequired,
 };
 
-CreatePoolForm.defaultProps = {
+CreateLotteryPoolForm.defaultProps = {
   isAdmin: false,
 };
 
-export default CreatePoolForm;
+export default CreateLotteryPoolForm;

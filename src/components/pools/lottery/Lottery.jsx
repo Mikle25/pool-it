@@ -1,11 +1,14 @@
 import React from 'react';
-import { FormControl, InputGroup } from 'react-bootstrap';
+import { FormControl, InputGroup, Spinner } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styled from 'styled-components';
 import { ContainerTable } from '../../styled/Wrappers';
 import TableCards from '../../TableCards';
 import CardLottery from './CardLottery';
-import { useLotteryStateContext } from '../../../store/lotteryContext';
+import {
+  useLotteryDispatchContext,
+  useLotteryStateContext,
+} from '../../../store/lotteryContext';
 import useThemeContext from '../../../hooks/useThemeContext';
 
 const InpGroup = styled(InputGroup)`
@@ -29,16 +32,18 @@ const Input = styled(FormControl)`
 
 const Lottery = () => {
   const { dataLottery, isLoad } = useLotteryStateContext();
+  const { getData } = useLotteryDispatchContext();
   const theme = useThemeContext();
 
   return (
     <ContainerTable>
+      {isLoad && <Spinner animation="border" variant="primary" />}
+
       <TableCards
-        rows={dataLottery}
+        rows={dataLottery || []}
         rowKey="id"
-        maxHeight="600px"
         loading={isLoad}
-        lengthData={dataLottery.length}
+        getData={getData}
         content={(pool) => <CardLottery pool={pool} />}
       />
 

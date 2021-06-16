@@ -1,12 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Spinner } from 'react-bootstrap';
 import TableCards from '../../TableCards';
-import CardMyPool from './CardMyPool';
 import { SubTitle } from '../../styled/Text';
 import { ContainerTable } from '../../styled/Wrappers';
 import UserActivities from './chart/UserActivities';
 import OtherInfo from './other-info/OtherInfo';
-import { usePoolsStateContext } from '../../../store/poolsContract';
+import { usePoolsStateContext } from '../../../store/poolsContext';
+import CardPool from './CardPool';
 
 const Statistic = styled.section`
   display: flex;
@@ -16,17 +17,17 @@ const Statistic = styled.section`
 `;
 
 const MyPools = () => {
-  const { dataPools, isLoad } = usePoolsStateContext();
+  const { isLoad, dataPools } = usePoolsStateContext();
 
   return (
     <ContainerTable>
+      {isLoad && <Spinner animation="border" variant="primary" />}
+
       <TableCards
-        rows={dataPools}
-        maxHeight="750px"
+        rows={dataPools || []}
         rowKey="id"
         loading={isLoad}
-        lengthData={dataPools.length}
-        content={(pool) => <CardMyPool pool={pool} />}
+        content={(pool) => <CardPool pool={pool} />}
       />
 
       <Statistic>

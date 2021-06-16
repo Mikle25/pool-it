@@ -15,7 +15,7 @@ const convertUSDTtoEther = (amount) => {
 };
 
 const convertEtherToUSDT = (amount) => {
-  return web3.utils.fromWei(amount, 'ether');
+  return `${web3.utils.fromWei(amount, 'ether')} USDT`;
 };
 
 const convertTimeMSecToSec = (time) =>

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { SubTitle } from '../../styled/Text';
 import CardRates from '../card/CardRates';
-import { BtnBig, BtnBigSkyBlue } from '../../styled/Btn';
+import { BtnBig, BtnBigSkyBlue } from '../../styled/Btns';
 import useThemeContext from '../../../hooks/useThemeContext';
 import { BtnWrapper } from '../../styled/Wrappers';
 

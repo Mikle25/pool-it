@@ -28,6 +28,7 @@ const Btn = styled(Button)`
 const BtnLink = styled(Button).attrs({
   variant: 'link',
 })`
+  font-weight: ${({ fw }) => fw || 'normal'};
   color: ${({ theme }) => theme.blue};
   &:hover {
     color: ${({ theme }) => theme.darkBlue};
