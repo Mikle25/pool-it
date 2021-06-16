@@ -6,7 +6,7 @@ import React, {
   useEffect,
 } from 'react';
 import PropTypes from 'prop-types';
-import { web3 } from '../plugins/web3';
+import { balanceERC20, web3 } from '../plugins/web3';
 import handlerError from '../utils/errorsHandler';
 
 const { ethereum } = window;
@@ -51,6 +51,7 @@ const useUserDispatchContext = () => {
 // Provider
 const UserProvider = ({ children }) => {
   const [address, setAddress] = useState('');
+  const [balanceUSDT, setBalanceUSDT] = useState(0);
 
   const isMetaMaskInstall = useMemo(() => {
     return Boolean(ethereum && ethereum.isMetaMask);
@@ -75,8 +76,10 @@ const UserProvider = ({ children }) => {
   const updateAcc = async () => {
     try {
       const acc = await web3.eth.getAccounts();
+      const balance = await balanceERC20(acc[0]);
 
       setAddress(acc[0]);
+      setBalanceUSDT(balance);
     } catch (e) {
       setAddress('');
       handlerError(e);
@@ -93,10 +96,11 @@ const UserProvider = ({ children }) => {
   const stateValue = useMemo(() => {
     return {
       address,
+      balanceUSDT,
       isLoggedIn,
       isMetaMaskInstall,
     };
-  }, [address, isLoggedIn, isMetaMaskInstall]);
+  }, [address, balanceUSDT, isLoggedIn, isMetaMaskInstall]);
 
   const stateDispatch = useMemo(() => {
     return {

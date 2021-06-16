@@ -1,22 +1,25 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BtnWhite } from '../../styled/Btns';
 import Modal from '../../styled/Modal';
 import { SubTitle } from '../../styled/Text';
 import CreateLotteryPoolForm from '../lottery/CreateLotteryPoolForm';
-
 import { useLotteryStateContext } from '../../../store/lotteryContext';
 import CreateSavingPoolForm from '../my-pools/CreateSavingPoolForm';
+import { useUserStateContext } from '../../../store/userContext';
+import useModal from '../../../hooks/useModal';
 
 const CreatePool = () => {
   const { isAdmin } = useLotteryStateContext();
+  const { address } = useUserStateContext();
+  const { show, handleClose, handleShow } = useModal();
 
-  const [show, setShow] = useState(false);
-  const handleClose = () => {
-    setShow(false);
-  };
-  const handleShow = () => {
-    setShow(true);
-  };
+  // const [show, setShow] = useState(false);
+  // const handleClose = () => {
+  //   setShow(false);
+  // };
+  // const handleShow = () => {
+  //   setShow(true);
+  // };
 
   return (
     <>
@@ -34,12 +37,15 @@ const CreatePool = () => {
         <Modal.Body>
           {isAdmin ? (
             <CreateLotteryPoolForm
-              setShow={setShow}
               onCancel={handleClose}
               isAdmin={isAdmin}
+              userAddress={address}
             />
           ) : (
-            <CreateSavingPoolForm setShow={setShow} onCancel={handleClose} />
+            <CreateSavingPoolForm
+              userAddress={address}
+              onCancel={handleClose}
+            />
           )}
         </Modal.Body>
       </Modal>

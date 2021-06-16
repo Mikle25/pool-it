@@ -12,10 +12,12 @@ import AppHeader from './AppHeader';
 import AppFooter from './AppFooter';
 import { UserProvider } from '../../store/userContext';
 import Toast from '../styled/Toast';
+import ScrollToTop from '../../hooks/useScrollToTop';
 
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <ThemeProvider theme={theme}>
         <Normalize />
         <GlobalStyles />

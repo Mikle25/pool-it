@@ -4,17 +4,17 @@ import { Button, Form as BForm } from 'react-bootstrap';
 import { FormSubmit, FormGroup } from '../../styled/Form';
 import { usePoolsDispatchContext } from '../../../store/poolsContext';
 
-const CreateSavingPoolForm = ({ onCancel, setShow }) => {
+const CreateSavingPoolForm = ({ onCancel, userAddress }) => {
   const { createNewSavingPool } = usePoolsDispatchContext();
   const handleSubmit = () => {
-    createNewSavingPool();
+    createNewSavingPool(userAddress);
+    onCancel();
   };
 
   return (
     <BForm
       onSubmit={(e) => {
         e.preventDefault();
-        setShow(false);
         handleSubmit();
       }}
     >
@@ -34,7 +34,7 @@ const CreateSavingPoolForm = ({ onCancel, setShow }) => {
 
 CreateSavingPoolForm.propTypes = {
   onCancel: PropTypes.func,
-  setShow: PropTypes.func.isRequired,
+  userAddress: PropTypes.string.isRequired,
 };
 
 CreateSavingPoolForm.defaultProps = {

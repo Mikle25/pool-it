@@ -1,5 +1,6 @@
 import React, {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -10,6 +11,7 @@ import { contractSavingPoolFactory, createSavingPool } from '../plugins/web3';
 import handlerError from '../utils/errorsHandler';
 import { useUserStateContext } from './userContext';
 import useSavingPool from '../hooks/useSavingPool';
+import useLoadingPools from '../hooks/useLoadingPools';
 
 // State context
 const PoolsStateContext = createContext(undefined);
@@ -48,25 +50,29 @@ const PoolsProvider = ({ children }) => {
   const [isLoad, setLoad] = useState(true);
   const [dataPools, setDataPools] = useState([]);
   const [isUpdatePools, setUpdatePools] = useState(false);
-  const { dataFromPool, claimPool } = useSavingPool(address);
+  const { dataFromPool, claimPool } = useSavingPool(setUpdatePools);
+
+  // Pools registry
+  const registryLength = useCallback(async () => {
+    const res = await contractSavingPoolFactory()
+      .methods.userPoolsLength(address)
+      .call();
+
+    return res;
+  }, [address]);
+  const { getData, amountData } = useLoadingPools(registryLength);
 
   useEffect(() => {
     (async () => {
       try {
-        const res = await contractSavingPoolFactory()
-          .methods.userPoolsLength(address)
-          .call();
+        const res = await registryLength();
 
-        if (Number(res) > 0) {
-          setPoolsLength(Number(res));
-        } else {
-          setPoolsLength(0);
-        }
+        setPoolsLength(Number(res));
       } catch (e) {
         handlerError(e);
       }
     })();
-  }, [address, isUpdatePools]);
+  }, [isUpdatePools, registryLength, isUpdatePools]);
 
   useEffect(() => {
     (async () => {
@@ -74,7 +80,7 @@ const PoolsProvider = ({ children }) => {
         .fill(null)
         .map((_, index) => index)
         .reverse()
-        .slice(0, 4);
+        .slice(0, amountData);
 
       try {
         setLoad(true);
@@ -101,12 +107,12 @@ const PoolsProvider = ({ children }) => {
       setLoad(true);
       setDataPools([]);
     };
-  }, [address, dataFromPool, poolsLength]);
+  }, [address, amountData, dataFromPool, poolsLength]);
 
   // Methods saving pool
-  const createNewSavingPool = async () => {
+  const createNewSavingPool = async (userAddress) => {
     try {
-      await createSavingPool(address);
+      await createSavingPool(userAddress);
       setUpdatePools(true);
     } catch (e) {
       handlerError(e);
@@ -126,6 +132,7 @@ const PoolsProvider = ({ children }) => {
     return {
       createNewSavingPool,
       claimPool,
+      getData,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

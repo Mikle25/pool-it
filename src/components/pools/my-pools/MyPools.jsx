@@ -6,8 +6,11 @@ import { SubTitle } from '../../styled/Text';
 import { ContainerTable } from '../../styled/Wrappers';
 import UserActivities from './chart/UserActivities';
 import OtherInfo from './other-info/OtherInfo';
-import { usePoolsStateContext } from '../../../store/poolsContext';
-import CardPool from './CardPool';
+import {
+  usePoolsDispatchContext,
+  usePoolsStateContext,
+} from '../../../store/poolsContext';
+import CardPool from './CardMyPool';
 
 const Statistic = styled.section`
   display: flex;
@@ -18,6 +21,7 @@ const Statistic = styled.section`
 
 const MyPools = () => {
   const { isLoad, dataPools } = usePoolsStateContext();
+  const { getData } = usePoolsDispatchContext();
 
   return (
     <ContainerTable>
@@ -27,6 +31,7 @@ const MyPools = () => {
         rows={dataPools || []}
         rowKey="id"
         loading={isLoad}
+        getData={getData}
         content={(pool) => <CardPool pool={pool} />}
       />
 

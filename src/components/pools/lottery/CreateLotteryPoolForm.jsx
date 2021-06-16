@@ -59,7 +59,7 @@ const dateShame = () =>
       .max(10000, `Max value is not more than balance ${10000}`),
   });
 
-const CreateLotteryPoolForm = ({ setShow, onCancel, isAdmin }) => {
+const CreateLotteryPoolForm = ({ onCancel, isAdmin, userAddress }) => {
   const { createNewPool } = useLotteryDispatchContext();
 
   const handleSubmit = ({
@@ -75,7 +75,9 @@ const CreateLotteryPoolForm = ({ setShow, onCancel, isAdmin }) => {
       convertTimeMSecToSec(endDate),
       convertUSDTtoEther(participationAmount),
       isLottery,
+      userAddress,
     );
+    onCancel();
   };
 
   return (
@@ -90,7 +92,6 @@ const CreateLotteryPoolForm = ({ setShow, onCancel, isAdmin }) => {
         }}
         validationSchema={dateShame}
         onSubmit={(value) => {
-          setShow(false);
           handleSubmit(value);
         }}
       >
@@ -173,7 +174,7 @@ const CreateLotteryPoolForm = ({ setShow, onCancel, isAdmin }) => {
 CreateLotteryPoolForm.propTypes = {
   onCancel: PropTypes.func.isRequired,
   isAdmin: PropTypes.bool,
-  setShow: PropTypes.func.isRequired,
+  userAddress: PropTypes.string.isRequired,
 };
 
 CreateLotteryPoolForm.defaultProps = {

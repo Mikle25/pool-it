@@ -11,6 +11,7 @@ import { IconWrapper } from '../../styled/Icon';
 import TblCards from '../../styled/TblCards';
 import { Purple } from '../../styled/Text';
 import { usePoolsDispatchContext } from '../../../store/poolsContext';
+import { useUserStateContext } from '../../../store/userContext';
 
 const Total = styled(FlexAlignItemsCenter)`
   min-width: fit-content;
@@ -81,9 +82,10 @@ const BodyCardName = styled(FlexAlignItemsCenter)`
 const CardMyPool = ({ pool }) => {
   const theme = useThemeContext();
   const { claimPool } = usePoolsDispatchContext();
+  const { address } = useUserStateContext();
 
   const handleClaim = (poolAddress) => {
-    claimPool(poolAddress);
+    claimPool(poolAddress, address);
   };
 
   return (
@@ -98,7 +100,7 @@ const CardMyPool = ({ pool }) => {
             />
           </IconWrapper>
 
-          <span>{pool.id}</span>
+          <span>DFAR {pool.id}</span>
           <span className="active">Active</span>
         </BodyCardName>
 
@@ -109,15 +111,11 @@ const CardMyPool = ({ pool }) => {
         <TotalWrap>
           <Total className="item">
             <div>Balance:</div>
-            <div>{convertEtherToUSDT(pool.balancePool)}</div>
+            <div>{convertEtherToUSDT(pool.balancePool)} USDT</div>
           </Total>
         </TotalWrap>
 
         <InfoWrap>
-          <Info>
-            <span>Value</span>
-          </Info>
-
           <Info>
             <span>APY</span>
             <Purple>5%</Purple>

@@ -56,7 +56,16 @@ const LotteryProvider = ({ children }) => {
   const [poolsLength, setPoolsLength] = useState(0);
   const [isUpdatePools, setUpdatePools] = useState(false);
   const [isLoad, setLoad] = useState(true);
-  const { getData, amountData } = useLoadingPools();
+
+  // Pools registry
+  const registryLength = useCallback(async () => {
+    const res = await contractLotteryPoolFactory()
+      .methods.registryLength()
+      .call();
+
+    return res;
+  }, []);
+  const { getData, amountData } = useLoadingPools(registryLength);
 
   useEffect(() => {
     if (isMetaMaskInstall) {
@@ -119,20 +128,14 @@ const LotteryProvider = ({ children }) => {
   useEffect(() => {
     (async () => {
       try {
-        const res = await contractLotteryPoolFactory()
-          .methods.registryLength()
-          .call();
+        const res = await registryLength();
+
         setPoolsLength(Number(res));
-        if (Number(res) > 0) {
-          setPoolsLength(Number(res));
-        } else {
-          setPoolsLength(0);
-        }
       } catch (e) {
         handlerError(e);
       }
     })();
-  }, [isUpdatePools]);
+  }, [isUpdatePools, registryLength]);
 
   useEffect(() => {
     (async () => {
@@ -176,6 +179,7 @@ const LotteryProvider = ({ children }) => {
     endDate,
     poolCost,
     isLottery,
+    userAddress,
   ) => {
     try {
       await createLotteryPool(
@@ -184,7 +188,7 @@ const LotteryProvider = ({ children }) => {
         endDate,
         poolCost,
         isLottery,
-        address,
+        userAddress,
       );
       setUpdatePools(true);
     } catch (e) {
@@ -194,11 +198,11 @@ const LotteryProvider = ({ children }) => {
     }
   };
 
-  const playLottery = async (poolAddress, participationAmount) => {
+  const playLottery = async (poolAddress, userAddress, participationAmount) => {
     try {
-      await approveAccount(poolAddress, address, participationAmount);
+      await approveAccount(poolAddress, userAddress, participationAmount);
 
-      await participationInLottery(poolAddress, address);
+      await participationInLottery(poolAddress, userAddress);
       setUpdatePools(true);
     } catch (e) {
       handlerError(e);
@@ -207,9 +211,9 @@ const LotteryProvider = ({ children }) => {
     }
   };
 
-  const setWinner = async (poolAddress) => {
+  const setWinner = async (poolAddress, userAddress) => {
     try {
-      await setWinnerLottery(poolAddress, address);
+      await setWinnerLottery(poolAddress, userAddress);
       setUpdatePools(true);
     } catch (e) {
       handlerError(e);
@@ -218,9 +222,9 @@ const LotteryProvider = ({ children }) => {
     }
   };
 
-  const takeAmountWin = async (poolAddress) => {
+  const takeAmountWin = async (poolAddress, userAddress) => {
     try {
-      await claim(poolAddress, address);
+      await claim(poolAddress, userAddress);
       setUpdatePools(true);
     } catch (e) {
       handlerError(e);

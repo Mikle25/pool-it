@@ -16,6 +16,9 @@ const approveAccount = (toPool, userAddress, amount) =>
     from: userAddress,
   });
 
+const balanceERC20 = (userAddress) =>
+  ierc20().methods.balanceOf(userAddress).call();
+
 // TODO Lottery Pool
 const contractLotteryPoolFactory = (
   address = process.env.REACT_APP_CONTRACT_LOTTERY_POOL_FACTORY,
@@ -99,4 +102,5 @@ export {
   setWinnerLottery,
   claim,
   claimSavingPool,
+  balanceERC20,
 };

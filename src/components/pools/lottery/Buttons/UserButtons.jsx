@@ -19,7 +19,7 @@ const UserButtons = ({
           {userAddress === winner ? (
             <Btn
               onClick={() => {
-                takeAmountWin(poolAddress);
+                takeAmountWin(poolAddress, userAddress);
               }}
             >
               Get your winnings
@@ -29,7 +29,9 @@ const UserButtons = ({
               {showBtnPlay && (
                 <Btn
                   style={{ width: '200px' }}
-                  onClick={() => playLottery(poolAddress, participationAmount)}
+                  onClick={() =>
+                    playLottery(poolAddress, userAddress, participationAmount)
+                  }
                 >
                   Play
                 </Btn>

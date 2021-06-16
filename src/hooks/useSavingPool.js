@@ -7,7 +7,7 @@ import {
 } from '../plugins/web3';
 import handlerError from '../utils/errorsHandler';
 
-const useSavingPool = (currentAddress, isLoggedIn) => {
+const useSavingPool = (setUpdatePool) => {
   const dataFromPool = useCallback(async (poolAddress, index = 0) => {
     try {
       const getContract = await contractSavingPool(poolAddress);
@@ -34,22 +34,26 @@ const useSavingPool = (currentAddress, isLoggedIn) => {
     return [];
   }, []);
 
-  const participate = async (poolAddress, amount) => {
-    if (!isLoggedIn) return;
-
+  const participate = async (poolAddress, address, amount) => {
     try {
-      await approveAccount(poolAddress, currentAddress, amount);
-      await participationSavingPool(currentAddress, poolAddress, amount);
+      await approveAccount(poolAddress, address, amount);
+      await participationSavingPool(address, poolAddress, amount);
+      setUpdatePool(true);
     } catch (e) {
       handlerError(e);
+    } finally {
+      setUpdatePool(false);
     }
   };
 
-  const claimPool = async (poolAddress) => {
+  const claimPool = async (poolAddress, address) => {
     try {
-      await claimSavingPool(poolAddress, currentAddress);
+      await claimSavingPool(poolAddress, address);
+      setUpdatePool(true);
     } catch (e) {
       handlerError(e);
+    } finally {
+      setUpdatePool(false);
     }
   };
 

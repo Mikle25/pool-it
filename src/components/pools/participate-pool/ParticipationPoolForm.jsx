@@ -5,29 +5,34 @@ import * as Yup from 'yup';
 import { Button, Form as BForm, FormLabel } from 'react-bootstrap';
 import { useUserStateContext } from '../../../store/userContext';
 import { FormGroup, FormSubmit } from '../../styled/Form';
-import { convertUSDTtoEther } from '../../../utils/helpers';
+import { convertEtherToUSDT, convertUSDTtoEther } from '../../../utils/helpers';
 import { useParticipateDispatchContext } from '../../../store/participateContext';
 
-const amountSchema = Yup.object({
-  amountParticipation: Yup.number()
-    .required('Require')
-    .min(1, `Min cost of participation ${1}`)
-    .max(10000, `Max value is not more than balance ${10000}`),
-});
+const amountSchema = (balanceUSDT) =>
+  Yup.object({
+    amountParticipation: Yup.number()
+      .required('Require')
+      .min(1, `Min cost of participation ${1}`)
+      .max(
+        balanceUSDT,
+        `Max value is not more than balance ${balanceUSDT} USDT`,
+      ),
+  });
 
-const ParticipationPoolForm = ({ setShow, poolAddress, close }) => {
-  const { address } = useUserStateContext();
+const ParticipationPoolForm = ({ poolAddress, handleClose }) => {
+  const { address, balanceUSDT } = useUserStateContext();
   const { participate } = useParticipateDispatchContext();
 
   const handleSubmit = ({ amountParticipation }) => {
-    setShow(false);
-    participate(address, poolAddress, convertUSDTtoEther(amountParticipation));
+    participate(poolAddress, address, convertUSDTtoEther(amountParticipation));
+    handleClose();
   };
+
   return (
     <>
       <Formik
         initialValues={{ amountParticipation: '' }}
-        validationSchema={amountSchema}
+        validationSchema={amountSchema(convertEtherToUSDT(balanceUSDT))}
         onSubmit={(value) => {
           handleSubmit(value);
         }}
@@ -57,7 +62,7 @@ const ParticipationPoolForm = ({ setShow, poolAddress, close }) => {
             </FormGroup>
 
             <FormSubmit>
-              <Button variant="secondary" onClick={close}>
+              <Button variant="secondary" onClick={handleClose}>
                 Close
               </Button>
               <Button type="submit">Confirm</Button>
@@ -70,14 +75,12 @@ const ParticipationPoolForm = ({ setShow, poolAddress, close }) => {
 };
 
 ParticipationPoolForm.propTypes = {
-  setShow: PropTypes.func,
-  close: PropTypes.func,
+  handleClose: PropTypes.func,
   poolAddress: PropTypes.string,
 };
 
 ParticipationPoolForm.defaultProps = {
-  setShow: () => null,
-  close: () => null,
+  handleClose: () => null,
   poolAddress: '',
 };
 

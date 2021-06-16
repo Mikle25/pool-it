@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styled from 'styled-components';
 import { Spinner } from 'react-bootstrap';
@@ -15,6 +15,8 @@ import { useParticipateStateContext } from '../../../store/participateContext';
 import { Blue, SubTitle } from '../../styled/Text';
 import { convertEtherToUSDT } from '../../../utils/helpers';
 import { useUserStateContext } from '../../../store/userContext';
+import BtnCopy from '../../BtnCopy';
+import useModal from '../../../hooks/useModal';
 
 const Container = styled.section`
   background: url(${bgPools}) top no-repeat;
@@ -54,15 +56,8 @@ const PoolHeader = styled(FlexJustifyBetween)`
 const ParticipatePool = () => {
   const theme = useThemeContext();
   const { isLoggedIn } = useUserStateContext();
-  const [show, setShow] = useState(false);
   const { isDataPool, isLoading } = useParticipateStateContext();
-
-  const handleClose = () => {
-    setShow(false);
-  };
-  const handleShow = () => {
-    setShow(true);
-  };
+  const { show, handleClose, handleShow } = useModal();
 
   return (
     <Container>
@@ -86,23 +81,30 @@ const ParticipatePool = () => {
                         />
                       </IconWrapper>
 
-                      <SubTitle>DFAR {isDataPool.id}</SubTitle>
+                      <SubTitle>DFAR</SubTitle>
                     </PoolName>
 
                     <Blue style={{ fontWeight: 500 }}>Private</Blue>
                   </PoolHeader>
 
                   <Blue>Pool address: {isDataPool.poolAddress}</Blue>
+
                   <Blue>Owner: {isDataPool.beneficiary}</Blue>
-                  <Blue>
-                    Balance: {convertEtherToUSDT(isDataPool.balancePool)}
-                  </Blue>
+
+                  <Blue>Pool token: {isDataPool.poolToken}</Blue>
+
                   <Blue>
                     Number of participation: {isDataPool.participantsLength}
                   </Blue>
-                  <Blue>Pool token: {isDataPool.poolToken}</Blue>
 
-                  <a href={window.location.href}>link participation</a>
+                  <Blue>
+                    Balance: {convertEtherToUSDT(isDataPool.balancePool)} USDT
+                  </Blue>
+
+                  <div>
+                    <Blue>Link to participate</Blue>
+                    <BtnCopy textToCopy={window.location.href} />
+                  </div>
                 </PoolContainer.Info>
 
                 <Modal
@@ -118,8 +120,8 @@ const ParticipatePool = () => {
 
                   <Modal.Body>
                     <ParticipationPoolForm
-                      setShow={setShow}
-                      close={handleClose}
+                      handleShow={handleShow}
+                      handleClose={handleClose}
                       poolAddress={isDataPool.poolAddress}
                     />
                   </Modal.Body>

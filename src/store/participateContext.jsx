@@ -9,7 +9,6 @@ import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 import useSavingPool from '../hooks/useSavingPool';
 import handlerError from '../utils/errorsHandler';
-import { useUserStateContext } from './userContext';
 
 // State context
 const ParticipateStateContext = createContext(undefined);
@@ -44,9 +43,9 @@ const useParticipateDispatchContext = () => {
 
 // Provider
 const ParticipateProvider = ({ children }) => {
-  const { address, isLoggedIn } = useUserStateContext();
   const { address: poolAddress } = useParams();
-  const { dataFromPool, participate } = useSavingPool(address, isLoggedIn);
+  const [isUpdatePool, setUpdatePool] = useState(false);
+  const { dataFromPool, participate } = useSavingPool(setUpdatePool);
   const [isDataPool, setDataPool] = useState({});
   const [isLoading, setLoading] = useState(true);
 
@@ -62,7 +61,7 @@ const ParticipateProvider = ({ children }) => {
         setLoading(false);
       }
     })();
-  }, [dataFromPool, poolAddress]);
+  }, [dataFromPool, poolAddress, isUpdatePool]);
 
   const stateValue = useMemo(() => {
     return {
