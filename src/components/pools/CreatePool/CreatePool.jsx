@@ -8,15 +8,15 @@ import {
   convertUSDTtoEther,
 } from '../../../utils/helpers';
 import {
-  useLotteryDispatchContext,
+  // useLotteryDispatchContext,
   useLotteryStateContext,
 } from '../../../store/lotteryContext';
-import { useUserStateContext } from '../../../store/userContext';
+// import { useUserStateContext } from '../../../store/userContext';
 
 const CreatePool = () => {
-  const { createNewPool } = useLotteryDispatchContext();
+  // const { createNewPool } = useLotteryDispatchContext();
   const { isAdmin } = useLotteryStateContext();
-  const { address } = useUserStateContext();
+  // const { address } = useUserStateContext();
 
   const [show, setShow] = useState(false);
   const handleClose = () => {
@@ -34,14 +34,21 @@ const CreatePool = () => {
     isLottery,
   }) => {
     setShow(false);
-    createNewPool(
+    console.log(
       convertTimeMSecToSec(startDate),
       convertTimeMSecToSec(participationEndDate),
       convertTimeMSecToSec(endDate),
       convertUSDTtoEther(participationAmount),
       isLottery,
-      address,
     );
+    // createNewPool(
+    //   convertTimeMSecToSec(startDate),
+    //   convertTimeMSecToSec(participationEndDate),
+    //   convertTimeMSecToSec(endDate),
+    //   convertUSDTtoEther(participationAmount),
+    //   isLottery,
+    //   address,
+    // );
   };
 
   return (
