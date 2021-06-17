@@ -6,6 +6,7 @@ import React, {
   useEffect,
 } from 'react';
 import PropTypes from 'prop-types';
+import { toast } from 'react-toastify';
 import { balanceERC20, web3 } from '../plugins/web3';
 import handlerError from '../utils/errorsHandler';
 
@@ -90,6 +91,13 @@ const UserProvider = ({ children }) => {
     if (isMetaMaskInstall) {
       updateAcc();
       ethereum.on('accountsChanged', updateAcc);
+
+      // TODO select network for main network
+      ethereum.on('chainChanged', (chain) => {
+        if (chain !== '0x3') {
+          toast.error('Wrong network');
+        }
+      });
     }
   });
 
