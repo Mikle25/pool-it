@@ -6,7 +6,14 @@ import * as Yup from 'yup';
 import moment from 'moment';
 import styled from 'styled-components';
 import { FormSubmit, FormGroup } from '../../styled/Form';
+import {
+  convertEtherToUSDT,
+  convertTimeMSecToSec,
+  convertUSDTtoEther,
+} from '../../../utils/helpers';
+import { useLotteryDispatchContext } from '../../../store/lotteryContext';
 import DatePicker from '../../CustomDatePicker';
+import { useUserStateContext } from '../../../store/userContext';
 
 const ErrorMsg = styled.div`
   margin-top: 5px;
@@ -14,7 +21,7 @@ const ErrorMsg = styled.div`
   font-size: 12px;
 `;
 
-const dateShame = () =>
+const dateShame = (balanceUSDT) =>
   Yup.object({
     participationEndDate: Yup.date().test({
       name: 'startDate',
@@ -47,14 +54,34 @@ const dateShame = () =>
       },
     }),
 
-    // refactor max = balance users
     participationAmount: Yup.number()
       .required('Require')
       .min(1, `Min cost of participation ${1}`)
-      .max(10000, `Max value is not more than balance ${10000}`),
+      .max(balanceUSDT, `Max value is not more than balance ${balanceUSDT}`),
   });
 
-const CreatePoolForm = ({ onSubmit, onCancel, isAdmin }) => {
+const CreateLotteryPoolForm = ({ onCancel, isAdmin, userAddress }) => {
+  const { createNewPool } = useLotteryDispatchContext();
+  const { balanceUSDT } = useUserStateContext();
+
+  const handleSubmit = ({
+    startDate,
+    participationEndDate,
+    endDate,
+    participationAmount,
+    isLottery,
+  }) => {
+    createNewPool(
+      convertTimeMSecToSec(startDate),
+      convertTimeMSecToSec(participationEndDate),
+      convertTimeMSecToSec(endDate),
+      convertUSDTtoEther(participationAmount),
+      isLottery,
+      userAddress,
+    );
+    onCancel();
+  };
+
   return (
     <>
       <Formik
@@ -65,10 +92,9 @@ const CreatePoolForm = ({ onSubmit, onCancel, isAdmin }) => {
           participationAmount: '',
           isLottery: isAdmin,
         }}
-        validationSchema={dateShame}
-        onSubmit={(value, { setSubmitting }) => {
-          onSubmit(value);
-          setSubmitting(false);
+        validationSchema={dateShame(convertEtherToUSDT(balanceUSDT))}
+        onSubmit={(value) => {
+          handleSubmit(value);
         }}
       >
         {({
@@ -86,7 +112,7 @@ const CreatePoolForm = ({ onSubmit, onCancel, isAdmin }) => {
             </FormGroup>
 
             <FormGroup>
-              <BForm.Label>Participation end date</BForm.Label>
+              <BForm.Label>End date</BForm.Label>
 
               <DatePicker
                 onChange={(value) => {
@@ -112,7 +138,7 @@ const CreatePoolForm = ({ onSubmit, onCancel, isAdmin }) => {
             </FormGroup>
 
             <FormGroup>
-              <BForm.Label>Cost of participation</BForm.Label>
+              <BForm.Label>Min. participation in lottery</BForm.Label>
 
               <Field
                 as={BForm.Control}
@@ -132,7 +158,7 @@ const CreatePoolForm = ({ onSubmit, onCancel, isAdmin }) => {
             )}
 
             <FormSubmit>
-              <Button variant="danger" onClick={onCancel}>
+              <Button variant="secondary" onClick={onCancel}>
                 Close
               </Button>
 
@@ -147,14 +173,14 @@ const CreatePoolForm = ({ onSubmit, onCancel, isAdmin }) => {
   );
 };
 
-CreatePoolForm.propTypes = {
+CreateLotteryPoolForm.propTypes = {
   onCancel: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,
   isAdmin: PropTypes.bool,
+  userAddress: PropTypes.string.isRequired,
 };
 
-CreatePoolForm.defaultProps = {
+CreateLotteryPoolForm.defaultProps = {
   isAdmin: false,
 };
 
-export default CreatePoolForm;
+export default CreateLotteryPoolForm;

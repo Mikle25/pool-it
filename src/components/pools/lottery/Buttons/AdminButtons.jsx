@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Btn } from '../../../styled/Btn';
+import { Btn } from '../../../styled/Btns';
 import { useLotteryDispatchContext } from '../../../../store/lotteryContext';
 
 const AdminButtons = ({ poolAddress, userAddress, liquidated }) => {
@@ -24,8 +24,8 @@ const AdminButtons = ({ poolAddress, userAddress, liquidated }) => {
 
 AdminButtons.propTypes = {
   poolAddress: PropTypes.string.isRequired,
-  userAddress: PropTypes.string.isRequired,
   liquidated: PropTypes.bool.isRequired,
+  userAddress: PropTypes.string.isRequired,
 };
 
 export default AdminButtons;

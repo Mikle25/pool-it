@@ -6,22 +6,19 @@ import React, {
   useEffect,
 } from 'react';
 import PropTypes from 'prop-types';
-import { connectAcc, getAccBalance, getAccount, web3 } from '../plugins/web3';
+import { balanceERC20, web3 } from '../plugins/web3';
+import handlerError from '../utils/errorsHandler';
 
 const { ethereum } = window;
 
 // Default values
 const initialState = {
   address: [],
-  balance: null,
 };
 
 const initialDispatch = {
   setAddress() {
     throw new Error('setAccounts() is not implemented');
-  },
-  setBalance() {
-    throw new Error('setBalance() is not implemented');
   },
 };
 
@@ -54,11 +51,10 @@ const useUserDispatchContext = () => {
 // Provider
 const UserProvider = ({ children }) => {
   const [address, setAddress] = useState('');
-  const [balance, setBalance] = useState(null);
-  const [isMetaMaskInstall, setMetaMaskInstall] = useState(null);
+  const [balanceUSDT, setBalanceUSDT] = useState(0);
 
-  useEffect(() => {
-    return setMetaMaskInstall(Boolean(ethereum && ethereum.isMetaMask));
+  const isMetaMaskInstall = useMemo(() => {
+    return Boolean(ethereum && ethereum.isMetaMask);
   }, []);
 
   const isLoggedIn = useMemo(() => {
@@ -67,45 +63,44 @@ const UserProvider = ({ children }) => {
 
   const connect = async () => {
     try {
-      const acc = await connectAcc();
-      const bal = await getAccBalance(acc[0]);
+      const acc = await ethereum.request({
+        method: 'eth_requestAccounts',
+      });
 
       setAddress(acc[0]);
-      setBalance(bal);
     } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error(e);
+      handlerError(e);
+    }
+  };
+
+  const updateAcc = async () => {
+    try {
+      const acc = await web3.eth.getAccounts();
+      const balance = await balanceERC20(acc[0]);
+
+      setAddress(acc[0]);
+      setBalanceUSDT(balance);
+    } catch (e) {
+      setAddress('');
+      handlerError(e);
     }
   };
 
   useEffect(() => {
     if (isMetaMaskInstall) {
-      const updateAcc = async () => {
-        try {
-          const acc = await getAccount();
-          const bal = await getAccBalance(acc[0]);
-          const convertBal = await web3.utils.fromWei(bal, 'ether');
-
-          setAddress(acc[0]);
-          setBalance(convertBal);
-        } catch (e) {
-          // eslint-disable-next-line no-console
-          console.error(e);
-        }
-      };
-      ethereum.on('accountsChanged', updateAcc);
       updateAcc();
+      ethereum.on('accountsChanged', updateAcc);
     }
   });
 
   const stateValue = useMemo(() => {
     return {
       address,
-      balance,
+      balanceUSDT,
       isLoggedIn,
       isMetaMaskInstall,
     };
-  }, [address, isLoggedIn, balance, isMetaMaskInstall]);
+  }, [address, balanceUSDT, isLoggedIn, isMetaMaskInstall]);
 
   const stateDispatch = useMemo(() => {
     return {

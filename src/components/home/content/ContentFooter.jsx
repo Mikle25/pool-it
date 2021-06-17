@@ -1,10 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
 import { SubTitle } from '../../styled/Text';
 import CardRates from '../card/CardRates';
-import { BtnBig, BtnBigSkyBlue } from '../../styled/Btn';
+import { BtnBig, BtnBigSkyBlue } from '../../styled/Btns';
 import useThemeContext from '../../../hooks/useThemeContext';
 import { BtnWrapper } from '../../styled/Wrappers';
+import { useUserStateContext } from '../../../store/userContext';
 
 const InfoBlockWrapper = styled.section`
   display: flex;
@@ -33,6 +35,8 @@ const Wrapper = styled.div`
 
 const ContentFooter = () => {
   const theme = useThemeContext();
+  const history = useHistory();
+  const { isLoggedIn } = useUserStateContext();
 
   return (
     <InfoBlockWrapper>
@@ -61,8 +65,32 @@ const ContentFooter = () => {
       </Wrapper>
 
       <BtnWrapper>
-        <BtnBig fs={theme.fs24}>Create savings pool</BtnBig>
-        <BtnBigSkyBlue fs={theme.fs24}>Join lottery pool</BtnBigSkyBlue>
+        <BtnBig
+          fs={theme.fs24}
+          disabled={!isLoggedIn}
+          onClick={() => {
+            if (!isLoggedIn) return;
+
+            history.push({
+              pathname: '/pools',
+              state: { eventKey: 'my-pools' },
+            });
+          }}
+        >
+          Create savings pool
+        </BtnBig>
+
+        <BtnBigSkyBlue
+          onClick={() => {
+            history.push({
+              pathname: '/pools',
+              state: { eventKey: 'lottery' },
+            });
+          }}
+          fs={theme.fs24}
+        >
+          Join lottery pool
+        </BtnBigSkyBlue>
       </BtnWrapper>
     </InfoBlockWrapper>
   );

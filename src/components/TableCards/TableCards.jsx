@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styled from 'styled-components';
-import { Button, Spinner } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import TblCards from '../styled/TblCards';
 import useThemeContext from '../../hooks/useThemeContext';
 
@@ -19,42 +19,28 @@ const BtnArrow = styled(Button)`
   }
 `;
 
-const TableCards = ({
-  rows,
-  rowKey,
-  maxHeight,
-  content,
-  loading,
-  lengthData,
-}) => {
+const TableCards = ({ rows, rowKey, maxHeight, content, loading, getData }) => {
   const theme = useThemeContext();
 
   return (
     <>
-      {loading ? (
-        <Spinner animation="border" variant="primary" />
+      {(!rows || !rows.length) && !loading ? (
+        <div>Not data</div>
       ) : (
         <>
-          {!lengthData ? (
-            <span>Not data</span>
-          ) : (
-            <>
-              <TblCards style={{ overflowY: 'scroll' }} maxHeight={maxHeight}>
-                {rows.map((row) => (
-                  <TblCards.Card key={row[rowKey]}>
-                    {content(row)}
-                  </TblCards.Card>
-                ))}
-              </TblCards>
-              <BtnArrow>
-                <FontAwesomeIcon
-                  icon="chevron-down"
-                  color={theme.blue}
-                  style={{ verticalAlign: 'middle' }}
-                />
-              </BtnArrow>
-            </>
-          )}
+          <TblCards style={{ overflowY: 'scroll' }} maxHeight={maxHeight}>
+            {rows.map((row) => (
+              <TblCards.Card key={row[rowKey]}>{content(row)}</TblCards.Card>
+            ))}
+          </TblCards>
+
+          <BtnArrow onClick={getData}>
+            <FontAwesomeIcon
+              icon="chevron-down"
+              color={theme.blue}
+              style={{ verticalAlign: 'middle' }}
+            />
+          </BtnArrow>
         </>
       )}
     </>
@@ -67,12 +53,12 @@ TableCards.propTypes = {
   maxHeight: PropTypes.string,
   content: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
-  lengthData: PropTypes.number,
+  getData: PropTypes.func,
 };
 
 TableCards.defaultProps = {
   maxHeight: '100%',
-  lengthData: 0,
+  getData: () => null,
 };
 
 export default TableCards;

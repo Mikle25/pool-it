@@ -2,18 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Btn } from '../../styled/Btn';
+import { Link } from 'react-router-dom';
+import { Btn, BtnLink } from '../../styled/Btns';
 import { FlexAlignItemsCenter } from '../../styled/Flex';
 import useThemeContext from '../../../hooks/useThemeContext';
-import {
-  convertEtherToUSDT,
-  convertTimeSecToMSec,
-  randomColor,
-} from '../../../utils/helpers';
+import { convertEtherToUSDT, randomColor } from '../../../utils/helpers';
 import { IconWrapper } from '../../styled/Icon';
 import TblCards from '../../styled/TblCards';
-import { LightBlue, Purple } from '../../styled/Text';
-import { usePoolsDispatchContext } from '../../../store/poolsContract';
+import { Blue, Purple, SubTitle } from '../../styled/Text';
+import { usePoolsDispatchContext } from '../../../store/poolsContext';
 import { useUserStateContext } from '../../../store/userContext';
 
 const Total = styled(FlexAlignItemsCenter)`
@@ -30,7 +27,7 @@ const TotalWrap = styled(FlexAlignItemsCenter)`
   flex: 1 0 auto;
 
   .item {
-    width: 40%;
+    min-width: 300px;
   }
 
   @media (${({ theme }) => theme.mdDown}) {
@@ -84,8 +81,12 @@ const BodyCardName = styled(FlexAlignItemsCenter)`
 
 const CardMyPool = ({ pool }) => {
   const theme = useThemeContext();
+  const { claimPool } = usePoolsDispatchContext();
   const { address } = useUserStateContext();
-  const { participation } = usePoolsDispatchContext();
+
+  const handleClaim = (poolAddress) => {
+    claimPool(poolAddress, address);
+  };
 
   return (
     <>
@@ -99,37 +100,24 @@ const CardMyPool = ({ pool }) => {
             />
           </IconWrapper>
 
-          <span>{pool.id}</span>
-
-          {convertTimeSecToMSec(pool.participationEndDate) >
-          new Date().getTime() ? (
-            <span className="active">Active</span>
-          ) : (
-            <span className="active">Not active</span>
-          )}
+          <SubTitle>DFAR {pool.id}</SubTitle>
+          <span className="active">Active</span>
         </BodyCardName>
 
-        {!pool.isLottery && <span>Private</span>}
+        <span>Private</span>
       </TblCards.Header>
 
       <TblCards.Body>
         <TotalWrap>
           <Total className="item">
-            <div>Balance:</div>
-            <div>{convertEtherToUSDT(pool.balancePool)} USDT</div>
+            <Blue>Balance:</Blue>
+            <span>{convertEtherToUSDT(pool.balancePool)} USDT</span>
           </Total>
         </TotalWrap>
 
         <InfoWrap>
           <Info>
-            <span>Value</span>
-            <LightBlue>
-              {convertEtherToUSDT(pool.participationAmount)} USDT
-            </LightBlue>
-          </Info>
-
-          <Info>
-            <span>APY</span>
+            <Blue>APY</Blue>
             <Purple>5%</Purple>
           </Info>
         </InfoWrap>
@@ -139,14 +127,21 @@ const CardMyPool = ({ pool }) => {
         <Btn
           className="btn-size"
           fs={theme.fs14}
-          onClick={() => {
-            participation(pool.poolAddress, address, pool.participationAmount);
-          }}
+          onClick={() => handleClaim(pool.poolAddress)}
         >
-          Deposit DFAR
+          Claim
         </Btn>
 
-        <div>View pool</div>
+        <BtnLink
+          as={Link}
+          fw="700"
+          to={{
+            pathname: `/pool/${pool.poolAddress}`,
+            state: pool,
+          }}
+        >
+          View pool
+        </BtnLink>
       </TblCards.Footer>
     </>
   );

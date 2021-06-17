@@ -1,17 +1,17 @@
 import React, {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
   useState,
 } from 'react';
 import PropTypes from 'prop-types';
-import {
-  // approveAccount,
-  contractPoolFactory,
-  // participationInLottery,
-} from '../plugins/web3';
-import usePool from '../hooks/usePool';
+import { contractSavingPoolFactory, createSavingPool } from '../plugins/web3';
+import handlerError from '../utils/errorsHandler';
+import { useUserStateContext } from './userContext';
+import useSavingPool from '../hooks/useSavingPool';
+import useLoadingPools from '../hooks/useLoadingPools';
 
 // State context
 const PoolsStateContext = createContext(undefined);
@@ -45,57 +45,81 @@ const usePoolsDispatchContext = () => {
 
 // Provider
 const PoolsProvider = ({ children }) => {
+  const { address } = useUserStateContext();
   const [poolsLength, setPoolsLength] = useState(0);
-  const [isLoad, setLoad] = useState(false);
+  const [isLoad, setLoad] = useState(true);
   const [dataPools, setDataPools] = useState([]);
-  const { dataFromPool, isUpdatePools, participation } = usePool();
+  const [isUpdatePools, setUpdatePools] = useState(false);
+  const { dataFromPool, claimPool } = useSavingPool(setUpdatePools);
+
+  // Pools registry
+  const registryLength = useCallback(async () => {
+    const res = await contractSavingPoolFactory()
+      .methods.userPoolsLength(address)
+      .call();
+
+    return res;
+  }, [address]);
+  const { getData, amountData } = useLoadingPools(registryLength);
 
   useEffect(() => {
-    setDataPools([]);
-
     (async () => {
       try {
-        const res = await contractPoolFactory().methods.registryLength().call();
-        if (Number(res) > 0) {
-          setPoolsLength(Number(res));
-        } else {
-          setPoolsLength(0);
-        }
+        const res = await registryLength();
+
+        setPoolsLength(Number(res));
       } catch (e) {
-        // eslint-disable-next-line no-console
-        console.error(e);
+        handlerError(e);
       }
     })();
-  }, [isUpdatePools]);
+  }, [isUpdatePools, registryLength, isUpdatePools]);
 
   useEffect(() => {
-    setDataPools([]);
-
     (async () => {
       const arr = new Array(poolsLength)
         .fill(null)
-        .map((elem, index) => index)
-        .reverse();
+        .map((_, index) => index)
+        .reverse()
+        .slice(0, amountData);
 
       try {
         setLoad(true);
 
         const awaitAllPools = await Promise.all(
-          arr.map(async (num, index) => {
-            const res = await dataFromPool(num, index);
+          arr.map(async (_, index) => {
+            const poolAddress = await contractSavingPoolFactory()
+              .methods.userPool(address, index)
+              .call();
+            const res = await dataFromPool(poolAddress, index);
             return res;
           }),
         );
 
         setDataPools(awaitAllPools.filter((elem) => !elem.isLottery));
       } catch (e) {
-        // eslint-disable-next-line no-console
-        console.error(e);
+        handlerError(e);
       } finally {
         setLoad(false);
       }
     })();
-  }, [dataFromPool, poolsLength, isUpdatePools]);
+
+    return () => {
+      setLoad(true);
+      setDataPools([]);
+    };
+  }, [address, amountData, dataFromPool, poolsLength]);
+
+  // Methods saving pool
+  const createNewSavingPool = async (userAddress) => {
+    try {
+      await createSavingPool(userAddress);
+      setUpdatePools(true);
+    } catch (e) {
+      handlerError(e);
+    } finally {
+      setUpdatePools(false);
+    }
+  };
 
   const stateValue = useMemo(() => {
     return {
@@ -106,7 +130,9 @@ const PoolsProvider = ({ children }) => {
 
   const stateDispatch = useMemo(() => {
     return {
-      participation,
+      createNewSavingPool,
+      claimPool,
+      getData,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

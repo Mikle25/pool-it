@@ -4,18 +4,21 @@ import React, {
   useState,
   useMemo,
   useEffect,
+  useCallback,
 } from 'react';
 import PropTypes from 'prop-types';
 import { useUserStateContext } from './userContext';
 import {
-  contractPoolFactory,
-  createPoolLottery,
-  approveAccount,
+  contractLotteryPoolFactory,
+  createLotteryPool,
   setWinnerLottery,
-  participationInLottery,
   claim,
+  approveAccount,
+  participationInLottery,
+  contractLotteryPool,
 } from '../plugins/web3';
-import usePool from '../hooks/usePool';
+import handlerError from '../utils/errorsHandler';
+import useLoadingPools from '../hooks/useLoadingPools';
 
 // State context
 const LotteryStateContext = createContext(undefined);
@@ -53,12 +56,21 @@ const LotteryProvider = ({ children }) => {
   const [poolsLength, setPoolsLength] = useState(0);
   const [isUpdatePools, setUpdatePools] = useState(false);
   const [isLoad, setLoad] = useState(true);
-  const { dataFromPool } = usePool();
+
+  // Pools registry
+  const registryLength = useCallback(async () => {
+    const res = await contractLotteryPoolFactory()
+      .methods.registryLength()
+      .call();
+
+    return res;
+  }, []);
+  const { getData, amountData } = useLoadingPools(registryLength);
 
   useEffect(() => {
     if (isMetaMaskInstall) {
       (async () => {
-        const ownerContract = await contractPoolFactory()
+        const ownerContract = await contractLotteryPoolFactory()
           .methods.owner()
           .call();
 
@@ -67,27 +79,120 @@ const LotteryProvider = ({ children }) => {
     }
   }, [address, isMetaMaskInstall]);
 
+  const dataFromPool = useCallback(async (poolAddress, index) => {
+    try {
+      const getContract = await contractLotteryPool(poolAddress);
+
+      const isLottery = await getContract.methods.isLottery().call();
+
+      const winner = await contractLotteryPool(poolAddress)
+        .methods.winner()
+        .call();
+      const liquidated = await contractLotteryPool(poolAddress)
+        .methods.liquidated()
+        .call();
+
+      const balancePool = await contractLotteryPool(poolAddress)
+        .methods.poolBalance()
+        .call();
+      const startDate = await getContract.methods.startDate().call();
+      const participationEndDate = await getContract.methods
+        .participationEndDate()
+        .call();
+      const endDate = await getContract.methods.endDate().call();
+      const participationAmount = await getContract.methods
+        .participationAmount()
+        .call();
+      const poolToken = await getContract.methods.poolToken().call();
+
+      return {
+        id: index + 1,
+        poolAddress,
+        startDate,
+        participationEndDate,
+        endDate,
+        participationAmount,
+        poolToken,
+        balancePool,
+        liquidated,
+        winner,
+        isLottery,
+      };
+    } catch (e) {
+      handlerError(e);
+    }
+
+    return [];
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await registryLength();
+
+        setPoolsLength(Number(res));
+      } catch (e) {
+        handlerError(e);
+      }
+    })();
+  }, [isUpdatePools, registryLength]);
+
+  useEffect(() => {
+    (async () => {
+      const arr = new Array(poolsLength)
+        .fill(null)
+        .map((_, index) => index)
+        .reverse()
+        .slice(0, amountData);
+
+      try {
+        setLoad(true);
+
+        const awaitAllPools = await Promise.all(
+          arr.map(async (num, index) => {
+            const poolAddress = await contractLotteryPoolFactory()
+              .methods.registry(num)
+              .call();
+            const res = await dataFromPool(poolAddress, index);
+            return res;
+          }),
+        );
+
+        setDataLottery(awaitAllPools);
+      } catch (e) {
+        handlerError(e);
+      } finally {
+        setLoad(false);
+      }
+    })();
+
+    return () => {
+      setLoad(false);
+      setDataLottery([]);
+    };
+  }, [poolsLength, isUpdatePools, dataFromPool, amountData]);
+
+  // Methods lottery pool
   const createNewPool = async (
     startDate,
     participationEndDate,
     endDate,
     poolCost,
     isLottery,
-    ownerAddress,
+    userAddress,
   ) => {
     try {
-      await createPoolLottery(
+      await createLotteryPool(
         startDate,
         participationEndDate,
         endDate,
         poolCost,
         isLottery,
-        ownerAddress,
+        userAddress,
       );
       setUpdatePools(true);
     } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error(e);
+      handlerError(e);
     } finally {
       setUpdatePools(false);
     }
@@ -100,8 +205,7 @@ const LotteryProvider = ({ children }) => {
       await participationInLottery(poolAddress, userAddress);
       setUpdatePools(true);
     } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error(e);
+      handlerError(e);
     } finally {
       setUpdatePools(false);
     }
@@ -112,8 +216,7 @@ const LotteryProvider = ({ children }) => {
       await setWinnerLottery(poolAddress, userAddress);
       setUpdatePools(true);
     } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error(e);
+      handlerError(e);
     } finally {
       setUpdatePools(false);
     }
@@ -124,59 +227,11 @@ const LotteryProvider = ({ children }) => {
       await claim(poolAddress, userAddress);
       setUpdatePools(true);
     } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error(e);
+      handlerError(e);
     } finally {
       setUpdatePools(false);
     }
   };
-
-  useEffect(() => {
-    setDataLottery([]);
-
-    (async () => {
-      try {
-        const res = await contractPoolFactory().methods.registryLength().call();
-        if (Number(res) > 0) {
-          setPoolsLength(Number(res));
-        } else {
-          setPoolsLength(0);
-        }
-      } catch (e) {
-        // eslint-disable-next-line no-console
-        console.error(e);
-      }
-    })();
-  }, [isUpdatePools]);
-
-  useEffect(() => {
-    setDataLottery([]);
-
-    (async () => {
-      const arr = new Array(poolsLength)
-        .fill(null)
-        .map((elem, index) => index)
-        .reverse();
-
-      try {
-        setLoad(true);
-
-        const awaitAllPools = await Promise.all(
-          arr.map(async (num, index) => {
-            const res = await dataFromPool(num, index);
-            return res;
-          }),
-        );
-
-        setDataLottery(awaitAllPools.filter((elem) => elem.isLottery));
-      } catch (e) {
-        // eslint-disable-next-line no-console
-        console.error(e);
-      } finally {
-        setLoad(false);
-      }
-    })();
-  }, [poolsLength, isUpdatePools, dataFromPool]);
 
   const stateValue = useMemo(() => {
     return {
@@ -194,7 +249,9 @@ const LotteryProvider = ({ children }) => {
       playLottery,
       setWinner,
       takeAmountWin,
+      getData,
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

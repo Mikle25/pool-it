@@ -3,13 +3,14 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import bgMain from '../../assets/img/bg-main-page.png';
 import { Title } from '../styled/Text';
-import { BtnBig } from '../styled/Btn';
+import { BtnBig } from '../styled/Btns';
 import useThemeContext from '../../hooks/useThemeContext';
 import { BtnWrapper } from '../styled/Wrappers';
 
 const ContainerHeader = styled.section`
   display: flex;
   align-items: flex-end;
+  height: 100vh;
   background: url(${bgMain}) right no-repeat;
   background-size: cover;
   padding: 170px 14vw 3vw;

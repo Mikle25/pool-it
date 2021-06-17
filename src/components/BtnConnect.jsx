@@ -1,5 +1,5 @@
 import React from 'react';
-import { BtnWhite } from './styled/Btn';
+import { BtnWhite } from './styled/Btns';
 import { useUserDispatchContext } from '../store/userContext';
 
 const BtnConnect = () => {

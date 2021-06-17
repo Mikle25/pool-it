@@ -1,5 +1,18 @@
 # Getting Started with Create React App
 
+How to run
+[Yarn](https://yarnpkg.com/) is a default package manager of the project, therefore install it in advance.
+
+Clone the repo and run yarn or yarn install from the folder of the project to install all the necessary dependencies.
+
+The project needs some configuration of the .env file. Visit the official Create React App docs for more info on .env files. The .env file must have the following variables set:
+
+REACT_APP_CONTRACT_LOTTERY_POOL_FACTORY= "address contract"
+REACT_APP_CONTRACT_LOTTERY_POOL= "address contract"
+REACT_APP_CONTRACT_SAVING_POOL_FACTORY= "address contract"
+REACT_APP_CONTRACT_SAVING_POOL= "address contract"
+REACT_APP_CONTRACT_ADDRESS_TOKEN= "token address ERC20"
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

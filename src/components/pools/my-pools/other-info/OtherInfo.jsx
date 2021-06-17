@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Blue, LightBlue, SubTitle } from '../../../styled/Text';
 import cupIcon from '../../../../assets/img/other-info-cup-icon.svg';
-import { BtnWhite } from '../../../styled/Btn';
+import { BtnWhite } from '../../../styled/Btns';
 import DynamicCoins from '../chart/DynamicCoins';
 import useThemeContext from '../../../../hooks/useThemeContext';
 import { FlexCenter, FlexJustifyBetween } from '../../../styled/Flex';

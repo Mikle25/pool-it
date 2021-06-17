@@ -1,55 +1,17 @@
-import React, { useState } from 'react';
-import { BtnWhite } from '../../styled/Btn';
+import React from 'react';
+import { BtnWhite } from '../../styled/Btns';
 import Modal from '../../styled/Modal';
 import { SubTitle } from '../../styled/Text';
-import CreatePoolForm from './CreatePoolForm';
-import {
-  convertTimeMSecToSec,
-  convertUSDTtoEther,
-} from '../../../utils/helpers';
-import {
-  // useLotteryDispatchContext,
-  useLotteryStateContext,
-} from '../../../store/lotteryContext';
-// import { useUserStateContext } from '../../../store/userContext';
+import CreateLotteryPoolForm from '../lottery/CreateLotteryPoolForm';
+import { useLotteryStateContext } from '../../../store/lotteryContext';
+import CreateSavingPoolForm from '../my-pools/CreateSavingPoolForm';
+import { useUserStateContext } from '../../../store/userContext';
+import useModal from '../../../hooks/useModal';
 
 const CreatePool = () => {
-  // const { createNewPool } = useLotteryDispatchContext();
   const { isAdmin } = useLotteryStateContext();
-  // const { address } = useUserStateContext();
-
-  const [show, setShow] = useState(false);
-  const handleClose = () => {
-    setShow(false);
-  };
-  const handleShow = () => {
-    setShow(true);
-  };
-
-  const handleSubmit = ({
-    startDate,
-    participationEndDate,
-    endDate,
-    participationAmount,
-    isLottery,
-  }) => {
-    setShow(false);
-    console.log(
-      convertTimeMSecToSec(startDate),
-      convertTimeMSecToSec(participationEndDate),
-      convertTimeMSecToSec(endDate),
-      convertUSDTtoEther(participationAmount),
-      isLottery,
-    );
-    // createNewPool(
-    //   convertTimeMSecToSec(startDate),
-    //   convertTimeMSecToSec(participationEndDate),
-    //   convertTimeMSecToSec(endDate),
-    //   convertUSDTtoEther(participationAmount),
-    //   isLottery,
-    //   address,
-    // );
-  };
+  const { address } = useUserStateContext();
+  const { show, handleClose, handleShow } = useModal();
 
   return (
     <>
@@ -65,11 +27,18 @@ const CreatePool = () => {
         </Modal.Header>
 
         <Modal.Body>
-          <CreatePoolForm
-            onSubmit={handleSubmit}
-            onCancel={handleClose}
-            isAdmin={isAdmin}
-          />
+          {isAdmin ? (
+            <CreateLotteryPoolForm
+              onCancel={handleClose}
+              isAdmin={isAdmin}
+              userAddress={address}
+            />
+          ) : (
+            <CreateSavingPoolForm
+              userAddress={address}
+              onCancel={handleClose}
+            />
+          )}
         </Modal.Body>
       </Modal>
 

@@ -25,6 +25,20 @@ const Btn = styled(Button)`
   }
 `;
 
+const BtnLink = styled(Button).attrs({
+  variant: 'link',
+})`
+  font-weight: ${({ fw }) => fw || 'normal'};
+  color: ${({ theme }) => theme.blue};
+  &:hover {
+    color: ${({ theme }) => theme.darkBlue};
+  }
+  &:hover,
+  &:focus {
+    text-decoration: none;
+  }
+`;
+
 const BtnWhite = styled(Btn)`
   padding: 5px calc(${({ theme }) => theme.radiusButton} / 2);
   background-color: ${({ theme, bg }) => bg || theme.white};
@@ -51,4 +65,4 @@ const BtnBigSkyBlue = styled(BtnSkyBlue)`
   width: 100%;
 `;
 
-export { BtnSkyBlue, BtnBig, BtnBigSkyBlue, BtnWhite, Btn };
+export { BtnSkyBlue, BtnBig, BtnBigSkyBlue, BtnWhite, Btn, BtnLink };

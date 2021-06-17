@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Nav, Tab } from 'react-bootstrap';
+import { useLocation } from 'react-router-dom';
 import bgPools from '../assets/img/bg-pools.png';
 import { useUserStateContext } from '../store/userContext';
 import MyPools from '../components/pools/my-pools/MyPools';
@@ -8,7 +9,7 @@ import { ContentWrap, Content } from '../components/styled/Wrappers';
 import Lottery from '../components/pools/lottery/Lottery';
 import CreatePool from '../components/pools/CreatePool';
 import { LotteryProvider } from '../store/lotteryContext';
-import { PoolsProvider } from '../store/poolsContract';
+import { PoolsProvider } from '../store/poolsContext';
 
 const Container = styled.section`
   background: url(${bgPools}) top no-repeat;
@@ -60,6 +61,7 @@ const TabLinkWrap = styled.div`
 
 const Pools = () => {
   const { isLoggedIn } = useUserStateContext();
+  const location = useLocation();
 
   return (
     <LotteryProvider>
@@ -67,7 +69,15 @@ const Pools = () => {
         <Container>
           <ContentWrap>
             <Content>
-              <Tab.Container defaultActiveKey="lottery">
+              <Tab.Container
+                defaultActiveKey={
+                  isLoggedIn
+                    ? `${
+                        !location.state ? 'my-pools' : location.state.eventKey
+                      }`
+                    : `${!location.state ? 'lottery' : location.state.eventKey}`
+                }
+              >
                 <NavTabs variant="pills">
                   <TabLinkWrap>
                     <NavTabs.Item>

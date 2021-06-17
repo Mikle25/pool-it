@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Btn } from '../../../styled/Btn';
+import { Btn } from '../../../styled/Btns';
 import { useLotteryDispatchContext } from '../../../../store/lotteryContext';
 
 const UserButtons = ({
@@ -14,25 +14,29 @@ const UserButtons = ({
 
   return (
     <>
-      {userAddress === winner ? (
-        <Btn
-          onClick={() => {
-            takeAmountWin(poolAddress, userAddress);
-          }}
-        >
-          Get your winnings
-        </Btn>
-      ) : (
+      {!!userAddress && (
         <>
-          {showBtnPlay && (
+          {userAddress === winner ? (
             <Btn
-              style={{ width: '200px' }}
-              onClick={() =>
-                playLottery(poolAddress, userAddress, participationAmount)
-              }
+              onClick={() => {
+                takeAmountWin(poolAddress, userAddress);
+              }}
             >
-              Play
+              Get your winnings
             </Btn>
+          ) : (
+            <>
+              {showBtnPlay && (
+                <Btn
+                  style={{ width: '200px' }}
+                  onClick={() =>
+                    playLottery(poolAddress, userAddress, participationAmount)
+                  }
+                >
+                  Play
+                </Btn>
+              )}
+            </>
           )}
         </>
       )}
@@ -42,10 +46,14 @@ const UserButtons = ({
 
 UserButtons.propTypes = {
   poolAddress: PropTypes.string.isRequired,
-  userAddress: PropTypes.string.isRequired,
+  userAddress: PropTypes.string,
   winner: PropTypes.string.isRequired,
   participationAmount: PropTypes.string.isRequired,
   showBtnPlay: PropTypes.bool.isRequired,
+};
+
+UserButtons.defaultProps = {
+  userAddress: '',
 };
 
 export default UserButtons;
