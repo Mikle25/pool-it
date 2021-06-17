@@ -43,6 +43,7 @@ const White = styled.span`
 
 const Blue = styled.span`
   color: ${({ theme }) => theme.blue};
+  font-weight: ${({ fw }) => fw || 700};
 `;
 
 const Purple = styled.span`

@@ -12,7 +12,7 @@ import bgPools from '../../../assets/img/bg-pools.png';
 import { FlexAlignItemsCenter, FlexJustifyBetween } from '../../styled/Flex';
 import ParticipationPoolForm from './ParticipationPoolForm';
 import { useParticipateStateContext } from '../../../store/participateContext';
-import { Blue, SubTitle } from '../../styled/Text';
+import { Blue, LightBlue, SubTitle } from '../../styled/Text';
 import { convertEtherToUSDT } from '../../../utils/helpers';
 import { useUserStateContext } from '../../../store/userContext';
 import BtnCopy from '../../BtnCopy';
@@ -84,22 +84,33 @@ const ParticipatePool = () => {
                       <SubTitle>DFAR</SubTitle>
                     </PoolName>
 
-                    <Blue style={{ fontWeight: 500 }}>Private</Blue>
+                    <Blue fw={500}>Private</Blue>
                   </PoolHeader>
 
-                  <Blue>Pool address: {isDataPool.poolAddress}</Blue>
+                  <div>
+                    <Blue>Pool address: </Blue>
+                    <LightBlue> {isDataPool.poolAddress}</LightBlue>
+                  </div>
 
-                  <Blue>Owner: {isDataPool.beneficiary}</Blue>
+                  <div>
+                    <Blue>Owner: </Blue>
+                    <LightBlue>{isDataPool.beneficiary}</LightBlue>
+                  </div>
+                  <div>
+                    <Blue>Pool token: </Blue>
+                    <LightBlue>{isDataPool.poolToken}</LightBlue>
+                  </div>
+                  <div>
+                    <Blue>Number of participation: </Blue>
+                    <LightBlue>{isDataPool.participantsLength}</LightBlue>
+                  </div>
 
-                  <Blue>Pool token: {isDataPool.poolToken}</Blue>
-
-                  <Blue>
-                    Number of participation: {isDataPool.participantsLength}
-                  </Blue>
-
-                  <Blue>
-                    Balance: {convertEtherToUSDT(isDataPool.balancePool)} USDT
-                  </Blue>
+                  <div>
+                    <Blue>Balance: </Blue>
+                    <LightBlue>
+                      {convertEtherToUSDT(isDataPool.balancePool)} USDT
+                    </LightBlue>
+                  </div>
 
                   <div>
                     <Blue>Link to participate</Blue>

@@ -40,7 +40,7 @@ const ParticipationPoolForm = ({ poolAddress, handleClose }) => {
         {({ errors, touched }) => (
           <Form>
             <FormGroup>
-              <FormLabel>Enter amount</FormLabel>
+              <FormLabel>Enter the amount</FormLabel>
 
               <Field
                 as={BForm.Control}
