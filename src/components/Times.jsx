@@ -3,6 +3,12 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { FlexAlignItemsCenter } from './styled/Flex';
 import { convertTimeSecToMSec } from '../utils/helpers';
+import {
+  msInHours,
+  msInDays,
+  msInMinutes,
+  msInSeconds,
+} from '../utils/constants';
 
 const TimeWrap = styled(FlexAlignItemsCenter)`
   gap: 10px;
@@ -38,6 +44,7 @@ const Times = ({
     hours: '00',
     days: '0',
   });
+
   const participationEndDateLottery = convertTimeSecToMSec(
     participationEndDate,
   );
@@ -87,10 +94,10 @@ const Times = ({
       } else {
         t = participationEndDateLottery - nowDate;
       }
-      let seconds = Math.floor((t / 1000) % 60);
-      let minutes = Math.floor((t / 1000 / 60) % 60);
-      let hours = Math.floor((t / 1000 / 60 / 60) % 24);
-      const days = Math.floor(t / 1000 / 60 / 60 / 24);
+      let seconds = Math.floor((t / msInSeconds) % 60);
+      let minutes = Math.floor((t / msInMinutes) % 60);
+      let hours = Math.floor((t / msInHours) % 24);
+      const days = Math.floor(t / msInDays);
 
       if (seconds < 10) seconds = `0${seconds}`;
       if (minutes < 10) minutes = `0${minutes}`;
