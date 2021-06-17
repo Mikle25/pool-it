@@ -9,7 +9,7 @@ import useThemeContext from '../../../hooks/useThemeContext';
 import { convertEtherToUSDT, randomColor } from '../../../utils/helpers';
 import { IconWrapper } from '../../styled/Icon';
 import TblCards from '../../styled/TblCards';
-import { Purple } from '../../styled/Text';
+import { Blue, Purple, SubTitle } from '../../styled/Text';
 import { usePoolsDispatchContext } from '../../../store/poolsContext';
 import { useUserStateContext } from '../../../store/userContext';
 
@@ -100,7 +100,7 @@ const CardMyPool = ({ pool }) => {
             />
           </IconWrapper>
 
-          <span>DFAR {pool.id}</span>
+          <SubTitle>DFAR {pool.id}</SubTitle>
           <span className="active">Active</span>
         </BodyCardName>
 
@@ -110,14 +110,14 @@ const CardMyPool = ({ pool }) => {
       <TblCards.Body>
         <TotalWrap>
           <Total className="item">
-            <div>Balance:</div>
-            <div>{convertEtherToUSDT(pool.balancePool)} USDT</div>
+            <Blue>Balance:</Blue>
+            <span>{convertEtherToUSDT(pool.balancePool)} USDT</span>
           </Total>
         </TotalWrap>
 
         <InfoWrap>
           <Info>
-            <span>APY</span>
+            <Blue>APY</Blue>
             <Purple>5%</Purple>
           </Info>
         </InfoWrap>

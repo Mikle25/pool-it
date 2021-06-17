@@ -62,9 +62,7 @@ const Times = ({
     if (nowDate > participationEndDateLottery) {
       return setActive('Not active');
     }
-    if (nowDate < startDateLottery) {
-      return setActive('Start in');
-    }
+
     return setActive('Active');
   }, [
     endDateLottery,

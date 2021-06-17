@@ -7,11 +7,13 @@ import moment from 'moment';
 import styled from 'styled-components';
 import { FormSubmit, FormGroup } from '../../styled/Form';
 import {
+  convertEtherToUSDT,
   convertTimeMSecToSec,
   convertUSDTtoEther,
 } from '../../../utils/helpers';
 import { useLotteryDispatchContext } from '../../../store/lotteryContext';
 import DatePicker from '../../CustomDatePicker';
+import { useUserStateContext } from '../../../store/userContext';
 
 const ErrorMsg = styled.div`
   margin-top: 5px;
@@ -19,7 +21,7 @@ const ErrorMsg = styled.div`
   font-size: 12px;
 `;
 
-const dateShame = () =>
+const dateShame = (balanceUSDT) =>
   Yup.object({
     participationEndDate: Yup.date().test({
       name: 'startDate',
@@ -52,15 +54,15 @@ const dateShame = () =>
       },
     }),
 
-    // refactor max = balance users
     participationAmount: Yup.number()
       .required('Require')
       .min(1, `Min cost of participation ${1}`)
-      .max(10000, `Max value is not more than balance ${10000}`),
+      .max(balanceUSDT, `Max value is not more than balance ${balanceUSDT}`),
   });
 
 const CreateLotteryPoolForm = ({ onCancel, isAdmin, userAddress }) => {
   const { createNewPool } = useLotteryDispatchContext();
+  const { balanceUSDT } = useUserStateContext();
 
   const handleSubmit = ({
     startDate,
@@ -90,7 +92,7 @@ const CreateLotteryPoolForm = ({ onCancel, isAdmin, userAddress }) => {
           participationAmount: '',
           isLottery: isAdmin,
         }}
-        validationSchema={dateShame}
+        validationSchema={dateShame(convertEtherToUSDT(balanceUSDT))}
         onSubmit={(value) => {
           handleSubmit(value);
         }}
@@ -110,7 +112,7 @@ const CreateLotteryPoolForm = ({ onCancel, isAdmin, userAddress }) => {
             </FormGroup>
 
             <FormGroup>
-              <BForm.Label>Participation end date</BForm.Label>
+              <BForm.Label>End date</BForm.Label>
 
               <DatePicker
                 onChange={(value) => {
@@ -136,7 +138,7 @@ const CreateLotteryPoolForm = ({ onCancel, isAdmin, userAddress }) => {
             </FormGroup>
 
             <FormGroup>
-              <BForm.Label>Cost of participation</BForm.Label>
+              <BForm.Label>Min. participation in lottery</BForm.Label>
 
               <Field
                 as={BForm.Control}

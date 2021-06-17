@@ -13,14 +13,6 @@ const CreatePool = () => {
   const { address } = useUserStateContext();
   const { show, handleClose, handleShow } = useModal();
 
-  // const [show, setShow] = useState(false);
-  // const handleClose = () => {
-  //   setShow(false);
-  // };
-  // const handleShow = () => {
-  //   setShow(true);
-  // };
-
   return (
     <>
       <Modal

@@ -11,6 +11,7 @@ import AdminButtons from './Buttons/AdminButtons';
 import { IconWrapper } from '../../styled/Icon';
 import useThemeContext from '../../../hooks/useThemeContext';
 import Times from '../../Times';
+import { Blue } from '../../styled/Text';
 
 const BalancePool = styled.div`
   display: flex;
@@ -52,9 +53,15 @@ const CardLottery = ({ pool }) => {
         />
 
         <BalancePool>
-          <span>Rate: {convertEtherToUSDT(pool.participationAmount)} USDT</span>
+          <div>
+            <Blue>Min. required deposit: </Blue>
+            <span>{convertEtherToUSDT(pool.participationAmount)} USDT</span>
+          </div>
 
-          <span>Balance: {convertEtherToUSDT(pool.balancePool)} USDT</span>
+          <div>
+            <Blue>Balance: </Blue>
+            <span>{convertEtherToUSDT(pool.balancePool)} USDT</span>
+          </div>
         </BalancePool>
 
         {isAdmin ? (

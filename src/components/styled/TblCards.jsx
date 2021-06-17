@@ -18,7 +18,7 @@ TblCards.Card = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 15px 3vw;
+  padding: 15px 2rem;
   row-gap: 1rem;
 
   box-shadow: ${({ theme }) => theme.tableRowShadow};
