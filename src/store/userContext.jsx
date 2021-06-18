@@ -67,8 +67,10 @@ const UserProvider = ({ children }) => {
       const acc = await ethereum.request({
         method: 'eth_requestAccounts',
       });
+      const balance = await balanceERC20(acc[0]);
 
       setAddress(acc[0]);
+      setBalanceUSDT(balance);
     } catch (e) {
       handlerError(e);
     }
@@ -91,15 +93,25 @@ const UserProvider = ({ children }) => {
     if (isMetaMaskInstall) {
       updateAcc();
       ethereum.on('accountsChanged', updateAcc);
+    }
 
-      // TODO select network for main network
+    if (!isMetaMaskInstall) {
+      toast.error('Install the MetaMask extension');
+    }
+  }, [isMetaMaskInstall]);
+
+  // TODO select network for main network
+  useEffect(() => {
+    if (isMetaMaskInstall) {
       ethereum.on('chainChanged', (chain) => {
         if (chain !== '0x3') {
           toast.error('Wrong network');
         }
+
+        window.location.reload();
       });
     }
-  });
+  }, [isMetaMaskInstall]);
 
   const stateValue = useMemo(() => {
     return {

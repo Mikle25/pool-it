@@ -7,13 +7,11 @@ import moment from 'moment';
 import styled from 'styled-components';
 import { FormSubmit, FormGroup } from '../../styled/Form';
 import {
-  convertEtherToUSDT,
   convertTimeMSecToSec,
   convertUSDTtoEther,
 } from '../../../utils/helpers';
 import { useLotteryDispatchContext } from '../../../store/lotteryContext';
 import DatePicker from '../../CustomDatePicker';
-import { useUserStateContext } from '../../../store/userContext';
 
 const ErrorMsg = styled.div`
   margin-top: 5px;
@@ -21,7 +19,7 @@ const ErrorMsg = styled.div`
   font-size: 12px;
 `;
 
-const dateShame = (balanceUSDT) =>
+const dateShame = () =>
   Yup.object({
     participationEndDate: Yup.date().test({
       name: 'startDate',
@@ -56,13 +54,11 @@ const dateShame = (balanceUSDT) =>
 
     participationAmount: Yup.number()
       .required('Require')
-      .min(1, `Min cost of participation ${1}`)
-      .max(balanceUSDT, `Max value is not more than balance ${balanceUSDT}`),
+      .min(1, `Min cost of participation ${1}`),
   });
 
 const CreateLotteryPoolForm = ({ onCancel, isAdmin, userAddress }) => {
   const { createNewPool } = useLotteryDispatchContext();
-  const { balanceUSDT } = useUserStateContext();
 
   const handleSubmit = ({
     startDate,
@@ -92,7 +88,7 @@ const CreateLotteryPoolForm = ({ onCancel, isAdmin, userAddress }) => {
           participationAmount: '',
           isLottery: isAdmin,
         }}
-        validationSchema={dateShame(convertEtherToUSDT(balanceUSDT))}
+        validationSchema={dateShame}
         onSubmit={(value) => {
           handleSubmit(value);
         }}
